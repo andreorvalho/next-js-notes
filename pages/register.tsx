@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useTheme } from '../components/ThemeProvider';
 
 export default function Register() {
+  // Touch theme context to ensure provider is initialized (no local use here)
+  void useTheme();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const { toggleTheme } = useTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -31,7 +32,7 @@ export default function Register() {
 
       const data = await response.json().catch(() => ({}));
       setErrorMessage(data.error || 'Failed to register');
-    } catch (err) {
+    } catch {
       setErrorMessage('Failed to register');
     } finally {
       setIsSubmitting(false);
@@ -71,8 +72,18 @@ export default function Register() {
           {/* Error message */}
           {errorMessage && (
             <div className="alert alert-error">
-              <svg className="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="alert-icon"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               <span>{errorMessage}</span>
             </div>
@@ -119,26 +130,27 @@ export default function Register() {
               />
             </div>
 
-            <button type="submit" disabled={isSubmitting} className={`btn btn-primary w-full ${isSubmitting ? 'btn-loading' : ''}`}>
-              {isSubmitting ? <span className="sr-only">Creating account...</span> : 'Create account'}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`btn btn-primary w-full ${isSubmitting ? 'btn-loading' : ''}`}
+            >
+              {isSubmitting ? (
+                <span className="sr-only">Creating account...</span>
+              ) : (
+                'Create account'
+              )}
             </button>
           </form>
 
           {/* Footer */}
           <footer className="mt-8 text-center">
-            <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+            <p
+              className="text-sm"
+              style={{ color: 'var(--color-text-secondary)' }}
+            >
               Already have an account?{' '}
-              <Link
-                href="/login"
-                className="font-medium transition-colors duration-200"
-                style={{ color: 'var(--color-primary-600)', textDecoration: 'none' }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLElement).style.color = 'var(--color-primary-500)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLElement).style.color = 'var(--color-primary-600)';
-                }}
-              >
+              <Link href="/login" className="font-medium link-accent">
                 Sign in
               </Link>
             </p>

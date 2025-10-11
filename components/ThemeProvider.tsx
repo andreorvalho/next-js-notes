@@ -14,7 +14,9 @@ function getInitialTheme(): Theme {
   if (typeof window === 'undefined') return 'light';
   const saved = window.localStorage.getItem('theme');
   if (saved === 'light' || saved === 'dark') return saved;
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const prefersDark =
+    window.matchMedia &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches;
   return prefersDark ? 'dark' : 'light';
 }
 
@@ -24,7 +26,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Avoid flash: mark html as initializing before first effect runs
   useEffect(() => {
     document.documentElement.classList.add('theme-initializing');
-    return () => document.documentElement.classList.remove('theme-initializing');
+    return () =>
+      document.documentElement.classList.remove('theme-initializing');
   }, []);
 
   useEffect(() => {
@@ -36,16 +39,24 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
     window.localStorage.setItem('theme', theme);
     // next frame remove the initializing class to restore transitions
-    const id = window.requestAnimationFrame(() => root.classList.remove('theme-initializing'));
+    const id = window.requestAnimationFrame(() =>
+      root.classList.remove('theme-initializing')
+    );
     return () => window.cancelAnimationFrame(id);
   }, [theme]);
 
   const value = useMemo<ThemeContextValue>(
-    () => ({ theme, toggleTheme: () => setTheme(theme === 'dark' ? 'light' : 'dark'), setTheme }),
+    () => ({
+      theme,
+      toggleTheme: () => setTheme(theme === 'dark' ? 'light' : 'dark'),
+      setTheme,
+    }),
     [theme]
   );
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  );
 }
 
 export function useTheme(): ThemeContextValue {
@@ -53,5 +64,3 @@ export function useTheme(): ThemeContextValue {
   if (!ctx) throw new Error('useTheme must be used within ThemeProvider');
   return ctx;
 }
-
-

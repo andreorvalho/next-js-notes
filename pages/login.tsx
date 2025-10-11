@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { useTheme } from '../components/ThemeProvider';
 
 export default function Login() {
+  // Touch theme context to ensure provider is initialized (no local use here)
+  void useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const { toggleTheme } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -72,8 +73,18 @@ export default function Login() {
           {/* Success message */}
           {success && (
             <div className="alert alert-success">
-              <svg className="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="alert-icon"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               <span>Registration successful! Please log in.</span>
             </div>
@@ -110,8 +121,18 @@ export default function Login() {
             {/* Error message */}
             {error && (
               <div className="alert alert-error">
-                <svg className="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  className="alert-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
                 <span>{error}</span>
               </div>
@@ -138,20 +159,7 @@ export default function Login() {
               style={{ color: 'var(--color-text-secondary)' }}
             >
               Don&apos;t have an account?{' '}
-              <Link
-                href="/register"
-                className="font-medium transition-colors duration-200"
-                style={{
-                  color: 'var(--color-primary-600)',
-                  textDecoration: 'none'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.color = 'var(--color-primary-500)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.color = 'var(--color-primary-600)';
-                }}
-              >
+              <Link href="/register" className="font-medium link-accent">
                 Create one here
               </Link>
             </p>

@@ -22,8 +22,9 @@ export default async function handler(
         },
       });
       res.status(201).json({ message: 'User created' });
-    } catch (err: any) {
-      console.error('Registration error:', err);
+    } catch {
+      // eslint-disable-next-line no-console
+      console.error('Registration error:');
       res.status(500).json({ error: 'Failed to register user' });
     }
   } else {

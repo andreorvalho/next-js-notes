@@ -3,8 +3,17 @@ import { useTheme } from './ThemeProvider';
 export default function ThemeToggle() {
   const { toggleTheme } = useTheme();
   return (
-    <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
-      <svg className="theme-toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <button
+      onClick={toggleTheme}
+      className="theme-toggle"
+      aria-label="Toggle theme"
+    >
+      <svg
+        className="theme-toggle-icon"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
         <path
           className="icon-theme-dark"
           strokeLinecap="round"
@@ -23,5 +32,3 @@ export default function ThemeToggle() {
     </button>
   );
 }
-
-

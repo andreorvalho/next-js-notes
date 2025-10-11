@@ -94,9 +94,9 @@ module.exports = {
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',
         'slide-in': 'slideIn 0.5s ease-out',
-        'spin': 'spin 1s linear infinite',
-        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'shimmer': 'shimmer 1.5s infinite',
+        spin: 'spin 1s linear infinite',
+        pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        shimmer: 'shimmer 1.5s infinite',
       },
       keyframes: {
         fadeIn: {
@@ -138,4 +138,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};
