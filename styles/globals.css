@@ -106,6 +106,14 @@
   --z-modal: 1050;
   --z-popover: 1060;
   --z-tooltip: 1070;
+
+  /* App Gradients */
+  --gradient-app-bg: linear-gradient(
+    to bottom right,
+    var(--color-primary-50),
+    #ffffff,
+    var(--color-secondary-50)
+  );
 }
 
 /* Dark Theme */
@@ -118,6 +126,21 @@
   --color-text-tertiary: var(--color-gray-500);
   --color-border: var(--color-gray-700);
   --color-border-focus: var(--color-primary-400);
+
+  /* Dark theme gradient */
+  --gradient-app-bg: linear-gradient(
+    to bottom right,
+    var(--color-gray-900),
+    var(--color-gray-800),
+    var(--color-gray-900)
+  );
+}
+
+/* App background gradient utility */
+.bg-app-gradient {
+  background-image: var(--gradient-app-bg);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 /* ==========================================================================
@@ -137,6 +160,11 @@ html {
   tab-size: 4;
   font-feature-settings: normal;
   font-variation-settings: normal;
+}
+
+/* Ensure initial theme class transition-free on first paint */
+html.theme-initializing * {
+  transition: none !important;
 }
 
 body {
@@ -416,6 +444,12 @@ body {
   height: 1.5rem;
   transition: transform var(--transition-bounce);
 }
+
+/* Theme-aware icon visibility without JS conditionals */
+.icon-theme-light { display: inline; }
+.icon-theme-dark { display: none; }
+.dark .icon-theme-light { display: none; }
+.dark .icon-theme-dark { display: inline; }
 
 .theme-toggle:hover .theme-toggle-icon {
   transform: rotate(15deg);

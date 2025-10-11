@@ -1,32 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useTheme } from '../components/ThemeProvider';
 
 export default function Register() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { toggleTheme } = useTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    const savedTheme = typeof window !== 'undefined' ? localStorage.getItem('theme') : null;
-    const prefersDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setIsDarkMode(savedTheme === 'dark' || (!savedTheme && prefersDark));
-  }, []);
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
-
-  const toggleTheme = () => setIsDarkMode((v) => !v);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,14 +41,7 @@ export default function Register() {
   return (
     <div className="min-h-screen relative overflow-hidden animate-fade-in">
       {/* Background with CSS custom properties */}
-      <div
-        className="absolute inset-0 bg-gradient-to-br"
-        style={{
-          backgroundImage: isDarkMode
-            ? 'linear-gradient(to bottom right, var(--color-gray-900), var(--color-gray-800), var(--color-gray-900))'
-            : 'linear-gradient(to bottom right, var(--color-primary-50), #ffffff, var(--color-secondary-50))'
-        }}
-      />
+      <div className="absolute inset-0 bg-app-gradient" />
 
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden">
@@ -73,17 +50,6 @@ export default function Register() {
       </div>
 
       <div className="relative flex items-center justify-center min-h-screen p-4 container">
-        {/* Theme toggle */}
-        <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
-          <svg className="theme-toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            {isDarkMode ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            )}
-          </svg>
-        </button>
-
         {/* Card */}
         <div className="card w-full max-w-md animate-slide-in">
           {/* Header with logo */}
