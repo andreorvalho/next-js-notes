@@ -1,0 +1,9 @@
+# Cypress screenshots
+cypress/screenshots/
+/node_modules
+.next/
+.env
+dist/
+out/
+prisma/dev.db
+prisma/dev.db-journal

@@ -1,0 +1,59 @@
+version: 2.1
+
+jobs:
+  cypress-tests:
+    docker:
+      - image: cimg/node:18.0
+      - image: postgres:15
+        environment:
+          POSTGRES_DB: magicbook_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+
+      - run:
+          name: Install dependencies
+          command: npm ci
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+
+      - run:
+          name: Run database migrations
+          command: npx dotenv-cli -e .env.test -- npx prisma migrate deploy
+          environment:
+            DATABASE_URL: postgresql://postgres:postgres@localhost:5432/magicbook_test?schema=public
+            JWT_SECRET: 11340eb5d2b0eb56d429d5e6db9c86bbce392399189a6e008f6282589c520fc5
+
+      - run:
+          name: Run Cypress tests
+          command: npx dotenv-cli -e .env.test -- cypress run
+          environment:
+            DATABASE_URL: postgresql://postgres:postgres@localhost:5432/magicbook_test?schema=public
+            JWT_SECRET: 11340eb5d2b0eb56d429d5e6db9c86bbce392399189a6e008f6282589c520fc5
+            PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION: 'yes'
+
+      - store_artifacts:
+          path: cypress/screenshots
+
+      - store_artifacts:
+          path: cypress/videos
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - cypress-tests:
+          filters:
+            branches:
+              only: /^(main|develop)$/

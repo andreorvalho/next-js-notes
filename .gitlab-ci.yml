@@ -1,0 +1,30 @@
+image: node:18
+
+services:
+  - postgres:15
+
+variables:
+  POSTGRES_DB: magicbook_test
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/magicbook_test?schema=public'
+  JWT_SECRET: '11340eb5d2b0eb56d429d5e6db9c86bbce392399189a6e008f6282589c520fc5'
+
+before_script:
+  - apt-get update -qq && apt-get install -y -qq git
+  - npm ci
+
+cypress:
+  script:
+    - npx dotenv-cli -e .env.test -- npx prisma migrate deploy
+    - npx dotenv-cli -e .env.test -- cypress run
+  artifacts:
+    when: always
+    paths:
+      - cypress/screenshots/
+      - cypress/videos/
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - develop

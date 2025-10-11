@@ -1,0 +1,6 @@
+node_modules/
+.next/
+cypress/
+prisma/
+*.log
+.env*
