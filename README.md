@@ -18,7 +18,6 @@ This is a guide for setting up a simple **Next.js** application with **Prisma** 
 To get started, you'll need to install the following dependencies:
 
 ```bash
-npm install next react react-dom @prisma/client @next/font tailwindcss postcss autoprefixer dotenv
 npm i -D ts-node typescript @types/node @types/react
 ```
 
