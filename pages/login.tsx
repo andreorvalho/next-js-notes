@@ -75,7 +75,7 @@ export default function Login() {
         <div className="bg-decoration bg-decoration-secondary"></div>
       </div>
 
-      <div className="relative flex items-center justify-center min-h-screen p-4">
+      <div className="relative flex items-center justify-center min-h-screen p-4 container">
         {/* Theme toggle with modern CSS classes */}
         <button
           onClick={toggleTheme}
@@ -96,11 +96,16 @@ export default function Login() {
           {/* Header */}
           <header className="text-center mb-10">
             <div className="flex justify-center">
-              <img
-                src="/images/imageedit_3_8341165330.png"
-                alt="Notabili Logo"
-                className="h-32 w-auto"
-              />
+              <picture>
+                <source srcSet="/images/logo.webp" type="image/webp" />
+                <img
+                  src="/images/logo.png"
+                  alt="Notabili Logo"
+                  className="h-32 w-auto"
+                  loading="eager"
+                  decoding="async"
+                />
+              </picture>
             </div>
           </header>
 
