@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useTheme } from '../components/ThemeProvider';
 
 export default function Register() {
   const [fullName, setFullName] = useState('');
