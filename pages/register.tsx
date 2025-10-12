@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
-import Form from '../components/Form';
+// import Link from 'next/link';
+import Form from '@/components/Form';
 
 export default function Register() {
   const [fullName, setFullName] = useState('');
@@ -17,7 +17,8 @@ export default function Register() {
       name: 'name',
       id: 'name',
       value: fullName,
-      onChange: (e: ChangeEvent<HTMLInputElement>) => setFullName(e.target.value),
+      onChange: (e: ChangeEvent<HTMLInputElement>) =>
+        setFullName(e.target.value),
       required: true,
       className: 'form-input',
       placeholder: 'Name',
@@ -37,12 +38,13 @@ export default function Register() {
       name: 'password',
       id: 'password',
       value: password,
-      onChange: (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value),
+      onChange: (e: ChangeEvent<HTMLInputElement>) =>
+        setPassword(e.target.value),
       required: true,
       className: 'form-input',
       placeholder: 'Password',
     },
-  ]
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -3,8 +3,8 @@ import type { ChangeEvent } from 'react';
 import { signIn, getSession } from 'next-auth/react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
-import Form from '../components/Form';
+// import Link from 'next/link';
+import Form from '@/components/Form';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -29,12 +29,13 @@ export default function Login() {
       name: 'password',
       id: 'password',
       value: password,
-      onChange: (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value),
+      onChange: (e: ChangeEvent<HTMLInputElement>) =>
+        setPassword(e.target.value),
       required: true,
       className: 'form-input',
       placeholder: 'Password',
     },
-  ]
+  ];
 
   useEffect(() => {
     if (router.query.success) {
@@ -79,7 +80,9 @@ export default function Login() {
           footerText="Don’t have an account?"
           footerLink={{ href: '/register', label: 'Create one here' }}
           error={error}
-          success={success ? 'Registration successful! Please log in.' : undefined}
+          success={
+            success ? 'Registration successful! Please log in.' : undefined
+          }
           onSubmit={handleSubmit}
           formClassName="space-y-6"
           inputs={inputs}

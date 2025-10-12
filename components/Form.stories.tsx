@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Form } from './Form';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { Form } from '@/components/Form';
 
 const meta: Meta<typeof Form> = {
   title: 'Components/Form',
@@ -24,7 +24,12 @@ export const AllProps: Story = {
     inputs: [
       { type: 'text', name: 'name', placeholder: 'Name', required: true },
       { type: 'email', name: 'email', placeholder: 'E-mail', required: true },
-      { type: 'password', name: 'password', placeholder: 'Password', required: true },
+      {
+        type: 'password',
+        name: 'password',
+        placeholder: 'Password',
+        required: true,
+      },
     ],
     submitButton: {
       label: 'Submit',
@@ -58,5 +63,3 @@ export const WithError: Story = {
     inputs: [],
   },
 };
-
-

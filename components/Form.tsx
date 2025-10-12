@@ -22,11 +22,11 @@ type FormProps = {
   onSubmit?: FormEventHandler<HTMLFormElement>;
   formClassName?: string;
   inputs?: Array<InputHTMLAttributes<HTMLInputElement>>;
-  submitButton?: (Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> & {
+  submitButton?: Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> & {
     label?: ReactNode;
     loadingLabel?: ReactNode;
     isSubmitting?: boolean;
-  });
+  };
 };
 
 export function Form({
@@ -61,13 +61,19 @@ export function Form({
         )}
 
         {title && (
-          <h1 className="mt-6 text-2xl font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+          <h1
+            className="mt-6 text-2xl font-semibold"
+            style={{ color: 'var(--color-text-primary)' }}
+          >
             {title}
           </h1>
         )}
 
         {subtitle && (
-          <p className="mt-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+          <p
+            className="mt-2 text-sm"
+            style={{ color: 'var(--color-text-secondary)' }}
+          >
             {subtitle}
           </p>
         )}
@@ -121,7 +127,12 @@ export function Form({
                 const mergedClassName = className || 'form-input';
                 return (
                   <div className="form-group" key={inputId}>
-                    <input id={inputId} name={name} className={mergedClassName} {...rest} />
+                    <input
+                      id={inputId}
+                      name={name}
+                      className={mergedClassName}
+                      {...rest}
+                    />
                   </div>
                 );
               })}
@@ -137,8 +148,10 @@ export function Form({
               {...submitButton}
             >
               {submitButton.isSubmitting
-                ? (submitButton.loadingLabel || <span className="sr-only">Submitting...</span>)
-                : (submitButton.label || 'Submit')}
+                ? submitButton.loadingLabel || (
+                    <span className="sr-only">Submitting...</span>
+                  )
+                : submitButton.label || 'Submit'}
             </button>
           )}
         </form>
@@ -146,7 +159,10 @@ export function Form({
 
       {(footerText || footerLink) && (
         <footer className="mt-8 text-center">
-          <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+          <p
+            className="text-sm"
+            style={{ color: 'var(--color-text-secondary)' }}
+          >
             {footerText}
             {footerText && footerLink ? ' ' : null}
             {footerLink ? (
@@ -162,5 +178,3 @@ export function Form({
 }
 
 export default Form;
-
-
