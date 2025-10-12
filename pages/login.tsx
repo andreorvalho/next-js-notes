@@ -5,8 +5,6 @@ import Link from 'next/link';
 import { useTheme } from '../components/ThemeProvider';
 
 export default function Login() {
-  // Touch theme context to ensure provider is initialized (no local use here)
-  void useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
