@@ -39,3 +39,47 @@
 
 // Custom commands can be added here
 // Note: Database reset command is handled in plugins/index.js for Node.js context
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      login(): Chainable<void>
+      loginByCredentials(email: string, password: string): Chainable<void>
+    }
+  }
+}
+
+Cypress.Commands.add('loginByCredentials', (email: string, password: string) => {
+  cy.request('GET', '/api/auth/csrf').then(({ body }) => {
+    const csrfToken = body.csrfToken as string;
+    cy.request({
+      method: 'POST',
+      url: '/api/auth/callback/credentials?json=true',
+      form: true,
+      body: {
+        csrfToken,
+        email,
+        password,
+        callbackUrl: '/',
+        json: 'true',
+      },
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }).then(() => {
+      cy.request('/api/auth/session').its('status').should('eq', 200);
+    });
+  });
+});
+
+Cypress.Commands.add('login', () => {
+  const email = 'test@example.com';
+  const password = 'Password123!';
+  cy.session(
+    email,
+    () => {
+      cy.loginByCredentials(email, password);
+    },
+    { cacheAcrossSpecs: true }
+  );
+});

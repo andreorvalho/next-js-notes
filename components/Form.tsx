@@ -4,6 +4,7 @@ import type {
   FormEventHandler,
   InputHTMLAttributes,
   ButtonHTMLAttributes,
+  TextareaHTMLAttributes,
 } from 'react';
 
 type FooterLink = {
@@ -22,6 +23,7 @@ type FormProps = {
   onSubmit?: FormEventHandler<HTMLFormElement>;
   formClassName?: string;
   inputs?: Array<InputHTMLAttributes<HTMLInputElement>>;
+  textareas?: Array<TextareaHTMLAttributes<HTMLTextAreaElement>>;
   submitButton?: Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> & {
     label?: ReactNode;
     loadingLabel?: ReactNode;
@@ -40,6 +42,7 @@ export function Form({
   onSubmit,
   formClassName,
   inputs,
+  textareas,
   submitButton,
 }: FormProps) {
   return (
@@ -119,25 +122,43 @@ export function Form({
         )}
 
         <form onSubmit={onSubmit} className={formClassName || 'space-y-6'}>
-          {inputs && inputs.length > 0 && (
+          {(inputs && inputs.length > 0) || (textareas && textareas.length > 0) ? (
             <div className="space-y-6">
-              {inputs.map((inputProps, index) => {
-                const { className, id, name, ...rest } = inputProps;
-                const inputId = id || name || `input-${index}`;
-                const mergedClassName = className || 'form-input';
-                return (
-                  <div className="form-group" key={inputId}>
-                    <input
-                      id={inputId}
-                      name={name}
-                      className={mergedClassName}
-                      {...rest}
-                    />
-                  </div>
-                );
-              })}
+              {inputs &&
+                inputs.map((inputProps, index) => {
+                  const { className, id, name, ...rest } = inputProps;
+                  const inputId = id || name || `input-${index}`;
+                  const mergedClassName = className || 'form-input';
+                  return (
+                    <div className="form-group" key={`input-${inputId}`}>
+                      <input
+                        id={inputId}
+                        name={name}
+                        className={mergedClassName}
+                        {...rest}
+                      />
+                    </div>
+                  );
+                })}
+
+              {textareas &&
+                textareas.map((textareaProps, index) => {
+                  const { className, id, name, ...rest } = textareaProps;
+                  const textareaId = id || name || `textarea-${index}`;
+                  const mergedClassName = className || 'form-input';
+                  return (
+                    <div className="form-group" key={`textarea-${textareaId}`}>
+                      <textarea
+                        id={textareaId}
+                        name={name}
+                        className={mergedClassName}
+                        {...rest}
+                      />
+                    </div>
+                  );
+                })}
             </div>
-          )}
+          ) : null}
 
           {submitButton && (
             <button
