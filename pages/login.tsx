@@ -3,7 +3,6 @@ import type { ChangeEvent } from 'react';
 import { signIn, getSession } from 'next-auth/react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-// import Link from 'next/link';
 import Form from '@/components/Form';
 
 export default function Login() {
