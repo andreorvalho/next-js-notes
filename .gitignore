@@ -15,5 +15,22 @@ prisma/dev.db-journal
 # TypeScript build info
 *.tsbuildinfo
 
+# Storybook
 *storybook.log
 storybook-static
+
+# Cypress
+cypress/screenshots/
+cypress/videos/
+
+# ESLint
+.eslintcache
+
+# Prettier
+.prettiercache
+
+# env files
+.env
+.env.test
+.env.development
+.env.production
