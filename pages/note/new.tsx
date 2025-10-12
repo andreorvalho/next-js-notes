@@ -30,14 +30,16 @@ export default function NewNotePage() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data?.error ? JSON.stringify(data.error) : 'Failed to create note');
+        setError(
+          data?.error ? JSON.stringify(data.error) : 'Failed to create note'
+        );
         return;
       }
       setSuccess('Note created');
       setTitle('');
       setContent('');
       router.push('/');
-    } catch (err) {
+    } catch {
       setError('Network error');
     }
   };
@@ -67,7 +69,8 @@ export default function NewNotePage() {
             placeholder: 'Content',
             required: true,
             value: content,
-            onChange: (e) => setContent((e.currentTarget as HTMLTextAreaElement).value),
+            onChange: (e) =>
+              setContent((e.currentTarget as HTMLTextAreaElement).value),
             rows: 8,
           },
         ]}
@@ -81,5 +84,3 @@ export default function NewNotePage() {
     </div>
   );
 }
-
-
