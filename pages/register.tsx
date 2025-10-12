@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import type { ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Form from '../components/Form';
 
 export default function Register() {
   const [fullName, setFullName] = useState('');
@@ -9,6 +11,38 @@ export default function Register() {
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const inputs = [
+    {
+      type: 'text',
+      name: 'name',
+      id: 'name',
+      value: fullName,
+      onChange: (e: ChangeEvent<HTMLInputElement>) => setFullName(e.target.value),
+      required: true,
+      className: 'form-input',
+      placeholder: 'Name',
+    },
+    {
+      type: 'email',
+      name: 'email',
+      id: 'email',
+      value: email,
+      onChange: (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value),
+      required: true,
+      className: 'form-input',
+      placeholder: 'E-mail',
+    },
+    {
+      type: 'password',
+      name: 'password',
+      id: 'password',
+      value: password,
+      onChange: (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value),
+      required: true,
+      className: 'form-input',
+      placeholder: 'Password',
+    },
+  ]
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,111 +82,21 @@ export default function Register() {
       </div>
 
       <div className="relative flex items-center justify-center min-h-screen p-4 container">
-        {/* Card */}
-        <div className="card w-full max-w-md animate-slide-in">
-          {/* Header with logo */}
-          <header className="text-center mb-10">
-            <div className="flex justify-center">
-              <picture>
-                <source srcSet="/images/logo.webp" type="image/webp" />
-                <img
-                  src="/images/logo.png"
-                  alt="Notabili Logo"
-                  className="h-32 w-auto"
-                  loading="eager"
-                  decoding="async"
-                />
-              </picture>
-            </div>
-          </header>
-
-          {/* Error message */}
-          {errorMessage && (
-            <div className="alert alert-error">
-              <svg
-                className="alert-icon"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <span>{errorMessage}</span>
-            </div>
-          )}
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="form-group">
-              <input
-                type="text"
-                name="name"
-                id="name"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                required
-                className="form-input"
-                placeholder="Name"
-              />
-            </div>
-
-            <div className="form-group">
-              <input
-                type="email"
-                name="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="form-input"
-                placeholder="E-mail"
-              />
-            </div>
-
-            <div className="form-group">
-              <input
-                type="password"
-                name="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="form-input"
-                placeholder="Password"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`btn btn-primary w-full ${isSubmitting ? 'btn-loading' : ''}`}
-            >
-              {isSubmitting ? (
-                <span className="sr-only">Creating account...</span>
-              ) : (
-                'Create account'
-              )}
-            </button>
-          </form>
-
-          {/* Footer */}
-          <footer className="mt-8 text-center">
-            <p
-              className="text-sm"
-              style={{ color: 'var(--color-text-secondary)' }}
-            >
-              Already have an account?{' '}
-              <Link href="/login" className="font-medium link-accent">
-                Sign in
-              </Link>
-            </p>
-          </footer>
-        </div>
+        <Form
+          showLogo
+          footerText="Already have an account?"
+          footerLink={{ href: '/login', label: 'Sign in' }}
+          error={errorMessage}
+          onSubmit={handleSubmit}
+          formClassName="space-y-6"
+          inputs={inputs}
+          submitButton={{
+            label: 'Create account',
+            loadingLabel: <span className="sr-only">Creating account...</span>,
+            isSubmitting: isSubmitting,
+            className: '',
+          }}
+        />
       </div>
     </div>
   );
