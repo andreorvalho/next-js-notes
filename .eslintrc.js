@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['next/core-web-vitals'],
+  extends: ['next/core-web-vitals', 'plugin:storybook/recommended'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   rules: {

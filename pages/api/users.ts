@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { Request, Response, HTTP_GET, HTTP_POST } from '../../types';
+import { Request, Response, HTTP_GET, HTTP_POST } from '@/types';
 import { z } from 'zod';
 
 const prisma = new PrismaClient();
