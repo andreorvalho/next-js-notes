@@ -23,3 +23,9 @@ export interface User {
   password: string;
   active: boolean;
 }
+
+// HTTP method constants to avoid magic strings
+export const HTTP_GET = 'GET' as const;
+export const HTTP_POST = 'POST' as const;
+export const HTTP_PUT = 'PUT' as const;
+export const HTTP_DELETE = 'DELETE' as const;
