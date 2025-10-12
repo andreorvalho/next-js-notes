@@ -31,11 +31,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^4.1.1",
     "@eslint/js": "^9.37.0",
-    "@storybook/addon-a11y": "^9.1.10",
-    "@storybook/addon-docs": "^9.1.10",
-    "@storybook/addon-onboarding": "^9.1.10",
     "@storybook/nextjs-vite": "^9.1.10",
     "@types/bluebird": "^3.5.42",
     "@types/node": "^24.7.2",
