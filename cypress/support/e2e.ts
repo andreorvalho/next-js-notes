@@ -13,5 +13,5 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-// Import commands.js using ES2015 syntax:
-import './commands'
+// Import commands using CommonJS-compatible form to avoid tsx loader issues on CI
+require('./commands')

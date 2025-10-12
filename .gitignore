@@ -7,3 +7,10 @@ dist/
 out/
 prisma/dev.db
 prisma/dev.db-journal
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# TypeScript build info
+*.tsbuildinfo

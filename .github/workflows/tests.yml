@@ -32,7 +32,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version-file: '.nvmrc'
           cache: 'npm'
 
       - name: Install dependencies
@@ -54,7 +54,7 @@ jobs:
           JWT_SECRET: 11340eb5d2b0eb56d429d5e6db9c86bbce392399189a6e008f6282589c520fc5
 
       - name: Run Cypress tests
-        run: npx dotenv-cli -e .env.test -- cypress run
+        run: npx dotenv-cli -e .env.test -- cypress run --config-file cypress.config.js
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/magicbook_test?schema=public
           JWT_SECRET: 11340eb5d2b0eb56d429d5e6db9c86bbce392399189a6e008f6282589c520fc5

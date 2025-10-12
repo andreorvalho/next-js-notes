@@ -1,19 +1,19 @@
 import { PrismaClient } from '@prisma/client';
-import { Request, Response } from '../../types';
+import { Request, Response, HTTP_GET, HTTP_POST } from '../../types';
 import { z } from 'zod';
 
 const prisma = new PrismaClient();
 
 export default async function handler(req: Request, res: Response) {
-  if (req.method === 'GET') {
+  if (req.method === HTTP_GET) {
     const users = await prisma.user.findMany();
     return res.json(users);
   }
 
-  if (req.method === 'POST') {
+  if (req.method === HTTP_POST) {
     const userSchema = z.object({
       name: z.string(),
-      email: z.string().email(),
+      email: z.email(),
       password: z.string(),
     });
 

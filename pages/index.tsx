@@ -1,31 +1,36 @@
 import { useState, useEffect } from 'react';
 import { User } from '../types';
-import { useSession, signOut } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
+import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
 
 export default function Home() {
   const [users, setUsers] = useState<User[]>([]);
-  const { data: session, status } = useSession();
-  const loading = status === 'loading';
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const { session, isLoading: isLoadingAuth } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+    if (isLoadingAuth) return;
+    if (!session) {
+      router.replace('/login');
+      return;
+    }
+    setIsLoadingUsers(true);
     fetch('/api/users')
       .then((res) => res.json())
-      .then(setUsers);
-  }, []);
+      .then(setUsers)
+      .finally(() => setIsLoadingUsers(false));
+  }, [isLoadingAuth, session, router]);
 
   const handleLogout = async () => {
     await signOut({ redirect: false });
     router.push('/login');
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (isLoadingAuth || isLoadingUsers) return <p>Loading...</p>;
 
-  if (!session) {
-    router.push('/login');
-    return null;
-  }
+  if (!session) return null;
 
   return (
     <div>
