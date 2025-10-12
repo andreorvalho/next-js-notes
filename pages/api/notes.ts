@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 import type { Request, Response } from '@/types';
+import { HTTP_GET, HTTP_POST } from '@/types';
 
 const prisma = new PrismaClient();
 
@@ -10,7 +11,7 @@ const noteSchema = z.object({
 });
 
 export default async function handler(req: Request, res: Response) {
-  if (req.method === 'POST') {
+  if (req.method === HTTP_POST) {
     const parseResult = noteSchema.safeParse(req.body);
     if (!parseResult.success) {
       return res.status(400).json({ error: parseResult.error.flatten() });
@@ -21,7 +22,7 @@ export default async function handler(req: Request, res: Response) {
     return res.status(201).json(note);
   }
 
-  if (req.method === 'GET') {
+  if (req.method === HTTP_GET) {
     const notes = await prisma.note.findMany();
     return res.json(notes);
   }

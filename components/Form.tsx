@@ -232,6 +232,7 @@ export function Form({
       </div>
     );
   };
+
   return (
     <div className="card w-full max-w-md animate-slide-in">
       <header className="text-center mb-10">

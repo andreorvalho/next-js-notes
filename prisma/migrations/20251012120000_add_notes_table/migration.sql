@@ -5,5 +5,3 @@ CREATE TABLE "Note" (
     "content" TEXT NOT NULL,
     CONSTRAINT "Note_pkey" PRIMARY KEY ("id")
 );
-
-

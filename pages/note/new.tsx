@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Form from '@/components/Form';
 import { useAuth } from '@/hooks/useAuth';
+import { HTTP_POST } from '@/types';
 
 export default function NewNotePage() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function NewNotePage() {
     setSuccess(undefined);
     try {
       const res = await fetch('/api/notes', {
-        method: 'POST',
+        method: HTTP_POST,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, content }),
       });

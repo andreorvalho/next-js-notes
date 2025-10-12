@@ -8,6 +8,8 @@
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
+
+import { HTTP_GET, HTTP_POST } from '../../types';
 //
 //
 // -- This is a parent command --
@@ -50,10 +52,10 @@ declare global {
 }
 
 Cypress.Commands.add('loginByCredentials', (email: string, password: string) => {
-  cy.request('GET', '/api/auth/csrf').then(({ body }) => {
+  cy.request(HTTP_GET, '/api/auth/csrf').then(({ body }) => {
     const csrfToken = body.csrfToken as string;
     cy.request({
-      method: 'POST',
+      method: HTTP_POST,
       url: '/api/auth/callback/credentials?json=true',
       form: true,
       body: {

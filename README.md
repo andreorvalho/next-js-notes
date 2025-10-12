@@ -109,13 +109,15 @@ Add this code
 
 ```js
 import { PrismaClient } from '@prisma/client';
+import { HTTP_GET, HTTP_POST } from '@/types';
+
 const prisma = new PrismaClient();
 export default async function handler(req, res) {
-  if (req.method === 'GET') {
+  if (req.method === HTTP_GET) {
     const users = await prisma.user.findMany();
     return res.json(users);
   }
-  if (req.method === 'POST') {
+  if (req.method === HTTP_POST) {
     const { name, email } = req.body;
     const newUser = await prisma.user.create({ data: { name, email } });
     return res.status(201).json(newUser);

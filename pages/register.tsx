@@ -3,6 +3,7 @@ import type { ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 // import Link from 'next/link';
 import Form from '@/components/Form';
+import { HTTP_POST } from '@/types';
 
 export default function Register() {
   const [fullName, setFullName] = useState('');
@@ -53,7 +54,7 @@ export default function Register() {
 
     try {
       const response = await fetch('/api/auth/register', {
-        method: 'POST',
+        method: HTTP_POST,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: fullName, email, password }),
       });
