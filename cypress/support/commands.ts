@@ -52,24 +52,31 @@ declare global {
 }
 
 Cypress.Commands.add('loginByCredentials', (email: string, password: string) => {
-  cy.request(HTTP_GET, '/api/auth/csrf').then(({ body }) => {
-    const csrfToken = body.csrfToken as string;
+  // Get CSRF token first
+  cy.request(HTTP_GET, '/api/auth/csrf').then((response) => {
+    const csrfToken = response.body.csrfToken;
+
+    // Perform the login request
     cy.request({
       method: HTTP_POST,
-      url: '/api/auth/callback/credentials?json=true',
-      form: true,
+      url: '/api/auth/callback/credentials',
       body: {
-        csrfToken,
         email,
         password,
-        callbackUrl: '/',
+        csrfToken,
         json: 'true',
       },
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    }).then(() => {
-      cy.request('/api/auth/session').its('status').should('eq', 200);
+    }).then((loginResponse) => {
+      // For JWT strategy, NextAuth should return a 200 with cookies
+      expect(loginResponse.status).to.eq(200);
+
+      // The cookies should be automatically set by Cypress
+      // Verify the session is working
+      cy.request('/api/auth/session').then((sessionResponse) => {
+        expect(sessionResponse.status).to.eq(200);
+        expect(sessionResponse.body).to.have.property('user');
+        expect(sessionResponse.body.user.email).to.eq(email);
+      });
     });
   });
 });
@@ -77,6 +84,7 @@ Cypress.Commands.add('loginByCredentials', (email: string, password: string) => 
 Cypress.Commands.add('login', () => {
   const email = 'test@example.com';
   const password = 'Password123!';
+
   cy.session(
     email,
     () => {
