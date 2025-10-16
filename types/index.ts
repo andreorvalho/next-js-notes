@@ -24,6 +24,14 @@ export interface User {
   active: boolean;
 }
 
+export interface Note {
+  id: number;
+  title: string;
+  content: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
 // HTTP method constants to avoid magic strings
 export const HTTP_GET = 'GET' as const;
 export const HTTP_POST = 'POST' as const;
