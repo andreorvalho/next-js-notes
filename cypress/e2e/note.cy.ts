@@ -9,10 +9,10 @@ describe('Create Note', () => {
   });
 
   it('should create a new note when logged in', () => {
-    cy.visit('/note/new');
+    cy.visit('/notes/new');
 
     // Wait for the page to load and verify we're on the correct page
-    cy.url().should('include', '/note/new');
+    cy.url().should('include', '/notes/new');
 
     // Wait for the note document to be visible
     cy.get('.note-document', { timeout: 10000 }).should('be.visible');

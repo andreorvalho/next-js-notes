@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
-import type { Request, Response } from '@/types';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { HTTP_GET, HTTP_POST } from '@/types';
 
 const prisma = new PrismaClient();
@@ -10,7 +10,7 @@ const noteSchema = z.object({
   content: z.string(),
 });
 
-export default async function handler(req: Request, res: Response) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === HTTP_POST) {
     const parseResult = noteSchema.safeParse(req.body);
     if (!parseResult.success) {
@@ -23,7 +23,23 @@ export default async function handler(req: Request, res: Response) {
   }
 
   if (req.method === HTTP_GET) {
-    const notes = await prisma.note.findMany();
+    const { search, orderBy, orderDirection } = req.query;
+
+    const where = search ? {
+      OR: [
+        { title: { contains: search as string, mode: 'insensitive' as const } },
+        { content: { contains: search as string, mode: 'insensitive' as const } }
+      ]
+    } : {};
+
+    const orderByField = orderBy as string || 'updated_at';
+    const orderDirectionValue = orderDirection === 'asc' ? 'asc' : 'desc';
+
+    const notes = await prisma.note.findMany({
+      where,
+      orderBy: { [orderByField]: orderDirectionValue }
+    });
+
     return res.json(notes);
   }
 
