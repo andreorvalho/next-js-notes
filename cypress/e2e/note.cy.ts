@@ -14,20 +14,31 @@ describe('Create Note', () => {
     // Wait for the page to load and verify we're on the correct page
     cy.url().should('include', '/note/new');
 
-    // Wait for the form to be visible (this handles auth redirects and loading states)
-    cy.get('form', { timeout: 10000 }).should('be.visible');
+    // Wait for the note document to be visible
+    cy.get('.note-document', { timeout: 10000 }).should('be.visible');
 
-    // Verify we can see the title input field
-    cy.get('input[name="title"]', { timeout: 5000 }).should('be.visible');
-    cy.get('input[name="title"]').type('My first note');
+    // Click on the title area to start editing
+    cy.get('.note-title').click();
 
-    cy.get('textarea[name="content"]').should('be.visible');
-    cy.get('textarea[name="content"]').type('This is the content of my note.');
+    // Type the title
+    cy.get('.inline-edit-input').first().type('My first note');
 
-    // Click the submit button
-    cy.get('button[type="submit"]').contains('Create Note').click();
+    // Press Enter to save the title
+    cy.get('.inline-edit-input').first().type('{enter}');
 
-    // Wait for the redirect to complete
+    // Wait for the title to be saved (check for success message or last saved indicator)
+    cy.contains('Note saved', { timeout: 5000 }).should('be.visible');
+
+    // Click on the content area to start editing
+    cy.get('.note-content').click();
+
+    // Type the content
+    cy.get('.inline-edit-input').last().type('This is the content of my note.');
+
+    // Press Ctrl+Enter (or Cmd+Enter on Mac) to save the content
+    cy.get('.inline-edit-input').last().type('{ctrl+enter}');
+
+    // Wait for the note to be saved and redirected
     cy.url({ timeout: 10000 }).should('eq', `${Cypress.config().baseUrl}/`);
 
     // Verify we can see the success message or home page content

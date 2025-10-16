@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 const noteSchema = z.object({
   title: z.string().min(1),
-  content: z.string().min(1),
+  content: z.string(),
 });
 
 export default async function handler(req: Request, res: Response) {
