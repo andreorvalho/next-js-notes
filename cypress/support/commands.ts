@@ -82,6 +82,15 @@ Cypress.Commands.add('login', () => {
     () => {
       cy.loginByCredentials(email, password);
     },
-    { cacheAcrossSpecs: true }
+    {
+      cacheAcrossSpecs: true,
+      validate: () => {
+        // Verify the session is still valid
+        cy.request('/api/auth/session').then((response) => {
+          expect(response.status).to.eq(200);
+          expect(response.body).to.have.property('user');
+        });
+      }
+    }
   );
 });
