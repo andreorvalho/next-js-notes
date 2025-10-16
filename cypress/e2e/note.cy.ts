@@ -4,7 +4,8 @@ describe('Create Note', () => {
   });
 
   beforeEach(() => {
-    cy.login();
+    // Mock the session instead of doing programmatic login
+    cy.mockSession();
   });
 
   it('should create a new note when logged in', () => {
