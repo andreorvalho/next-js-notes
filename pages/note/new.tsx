@@ -53,7 +53,7 @@ export default function NewNotePage() {
       if (title.trim() && content.trim()) {
         setTimeout(() => router.push('/'), 1000);
       }
-    } catch (err) {
+    } catch {
       setError('Network error');
     } finally {
       setIsSaving(false);

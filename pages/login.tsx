@@ -3,7 +3,7 @@ import type { ChangeEvent } from 'react';
 import { signIn, getSession } from 'next-auth/react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import Form from '@/components/Form';
+import { FlexibleForm } from '@/components/FlexibleForm';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -74,9 +74,9 @@ export default function Login() {
       </div>
 
       <div className="relative flex items-center justify-center min-h-screen p-4 container">
-        <Form
+        <FlexibleForm
           showLogo
-          footerText="Don’t have an account?"
+          footerText="Don't have an account?"
           footerLink={{ href: '/register', label: 'Create one here' }}
           error={error}
           success={

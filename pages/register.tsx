@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 // import Link from 'next/link';
-import Form from '@/components/Form';
+import { FlexibleForm } from '@/components/FlexibleForm';
 import { HTTP_POST } from '@/types';
 
 export default function Register() {
@@ -85,7 +85,7 @@ export default function Register() {
       </div>
 
       <div className="relative flex items-center justify-center min-h-screen p-4 container">
-        <Form
+        <FlexibleForm
           showLogo
           footerText="Already have an account?"
           footerLink={{ href: '/login', label: 'Sign in' }}
