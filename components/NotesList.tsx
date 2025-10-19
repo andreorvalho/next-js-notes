@@ -191,7 +191,7 @@ export default function NotesList({
               <div key={date}>
                 <h2 className="text-sm font-semibold text-text-secondary mb-2">{date}</h2>
                 <div className="space-y-2">
-                  {dateNotes.map((note, index) => (
+                  {dateNotes.map((note) => (
                     <div
                       key={note.id}
                       className={`bg-surface rounded-lg p-3 hover:bg-surface-elevated transition-colors cursor-pointer border border-border ${
@@ -219,7 +219,7 @@ export default function NotesList({
               <div key={date}>
                 <h2 className="text-sm font-semibold text-text-secondary mb-2">{date}</h2>
                 <div className="space-y-1">
-                  {dateNotes.map((note, index) => (
+                  {dateNotes.map((note) => (
                     <div
                       key={note.id}
                       className={`bg-surface rounded-lg p-3 hover:bg-surface-elevated transition-colors cursor-pointer border border-border ${

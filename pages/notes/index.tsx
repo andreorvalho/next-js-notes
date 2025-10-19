@@ -30,16 +30,6 @@ export default function NotesPage() {
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
   const [isSaving, setIsSaving] = useState(false);
-  const [lastSaved, setLastSaved] = useState<Date | null>(null);
-
-  useEffect(() => {
-    if (isLoadingAuth) return;
-    if (!session) {
-      router.replace('/login');
-      return;
-    }
-    fetchNotes();
-  }, [isLoadingAuth, session, searchQuery, sortField, sortDirection]);
 
   const fetchNotes = useCallback(async () => {
     setIsLoading(true);
@@ -58,6 +48,15 @@ export default function NotesPage() {
       setIsLoading(false);
     }
   }, [searchQuery, sortField, sortDirection]);
+
+  useEffect(() => {
+    if (isLoadingAuth) return;
+    if (!session) {
+      router.replace('/login');
+      return;
+    }
+    fetchNotes();
+  }, [isLoadingAuth, session, searchQuery, sortField, sortDirection, fetchNotes, router]);
 
   const handleLogout = useCallback(async () => {
     await signOut({ redirect: false });
@@ -109,7 +108,6 @@ export default function NotesPage() {
 
       const savedNote: Note = await res.json();
       setSelectedNote(savedNote);
-      setLastSaved(new Date(savedNote.updated_at));
       setSuccess('Note saved');
 
       // Clear success message after 2 seconds

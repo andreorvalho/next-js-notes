@@ -14,7 +14,7 @@ export default function Home() {
     }
     // Redirect authenticated users directly to notes
     router.replace('/notes');
-  }, [isLoadingAuth, session]);
+  }, [isLoadingAuth, session, router]);
 
   if (isLoadingAuth) return <p>Loading...</p>;
 
