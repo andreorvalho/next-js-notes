@@ -27,7 +27,7 @@ type Story = StoryObj<typeof meta>;
 export const TraditionalForm: Story = {
   args: {
     title: 'Contact Us',
-    subtitle: 'Send us a message and we\'ll get back to you',
+    subtitle: "Send us a message and we'll get back to you",
     layout: 'card',
     showLogo: true,
     fields: [
@@ -139,7 +139,7 @@ export const InteractiveForm: Story = {
     const [success, setSuccess] = useState('');
 
     const handleInputChange = (field: string) => (value: string) => {
-      setFormData(prev => ({ ...prev, [field]: value }));
+      setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
     const handleSave = () => {
@@ -160,7 +160,7 @@ export const InteractiveForm: Story = {
         label: 'Full Name',
         value: formData.name,
         onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-          setFormData(prev => ({ ...prev, name: e.target.value })),
+          setFormData((prev) => ({ ...prev, name: e.target.value })),
         placeholder: 'Enter your full name',
         required: true,
       },
@@ -170,7 +170,7 @@ export const InteractiveForm: Story = {
         label: 'Email Address',
         value: formData.email,
         onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-          setFormData(prev => ({ ...prev, email: e.target.value })),
+          setFormData((prev) => ({ ...prev, email: e.target.value })),
         placeholder: 'Enter your email',
         required: true,
       },
@@ -180,7 +180,7 @@ export const InteractiveForm: Story = {
         label: 'Message',
         value: formData.message,
         onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-          setFormData(prev => ({ ...prev, message: e.target.value })),
+          setFormData((prev) => ({ ...prev, message: e.target.value })),
         placeholder: 'Enter your message',
         rows: 4,
       },
@@ -213,7 +213,10 @@ export const InteractiveForm: Story = {
     return (
       <div className="space-y-8">
         <div>
-          <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>
+          <h3
+            className="text-lg font-semibold mb-4"
+            style={{ color: 'var(--color-text-primary)' }}
+          >
             Traditional Form
           </h3>
           <FlexibleForm
@@ -233,7 +236,10 @@ export const InteractiveForm: Story = {
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>
+          <h3
+            className="text-lg font-semibold mb-4"
+            style={{ color: 'var(--color-text-primary)' }}
+          >
             Inline Editing Form
           </h3>
           <FlexibleForm

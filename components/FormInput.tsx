@@ -36,16 +36,14 @@ export function FormInput({
   className,
   ...props
 }: FormInputProps) {
-  const inputId = id || name || `input-${Math.random().toString(36).substr(2, 9)}`;
+  const inputId =
+    id || name || `input-${Math.random().toString(36).substr(2, 9)}`;
   const mergedInputClassName = `${inputClassName} ${className || ''}`.trim();
 
   return (
     <div className={`form-group ${containerClassName}`}>
       {label && (
-        <label
-          htmlFor={inputId}
-          className={`form-label ${labelClassName}`}
-        >
+        <label htmlFor={inputId} className={`form-label ${labelClassName}`}>
           {label}
         </label>
       )}
@@ -58,13 +56,19 @@ export function FormInput({
       />
 
       {helpText && (
-        <p className={`text-sm mt-1 ${helpClassName}`} style={{ color: 'var(--color-text-tertiary)' }}>
+        <p
+          className={`text-sm mt-1 ${helpClassName}`}
+          style={{ color: 'var(--color-text-tertiary)' }}
+        >
           {helpText}
         </p>
       )}
 
       {error && (
-        <p className={`text-sm mt-1 ${errorClassName}`} style={{ color: 'var(--color-error)' }}>
+        <p
+          className={`text-sm mt-1 ${errorClassName}`}
+          style={{ color: 'var(--color-error)' }}
+        >
           {error}
         </p>
       )}
@@ -86,16 +90,15 @@ export function FormTextarea({
   className,
   ...props
 }: FormTextareaProps) {
-  const textareaId = id || name || `textarea-${Math.random().toString(36).substr(2, 9)}`;
-  const mergedTextareaClassName = `${textareaClassName} ${className || ''}`.trim();
+  const textareaId =
+    id || name || `textarea-${Math.random().toString(36).substr(2, 9)}`;
+  const mergedTextareaClassName =
+    `${textareaClassName} ${className || ''}`.trim();
 
   return (
     <div className={`form-group ${containerClassName}`}>
       {label && (
-        <label
-          htmlFor={textareaId}
-          className={`form-label ${labelClassName}`}
-        >
+        <label htmlFor={textareaId} className={`form-label ${labelClassName}`}>
           {label}
         </label>
       )}
@@ -108,13 +111,19 @@ export function FormTextarea({
       />
 
       {helpText && (
-        <p className={`text-sm mt-1 ${helpClassName}`} style={{ color: 'var(--color-text-tertiary)' }}>
+        <p
+          className={`text-sm mt-1 ${helpClassName}`}
+          style={{ color: 'var(--color-text-tertiary)' }}
+        >
           {helpText}
         </p>
       )}
 
       {error && (
-        <p className={`text-sm mt-1 ${errorClassName}`} style={{ color: 'var(--color-error)' }}>
+        <p
+          className={`text-sm mt-1 ${errorClassName}`}
+          style={{ color: 'var(--color-error)' }}
+        >
           {error}
         </p>
       )}

@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
+import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaClient } from '@prisma/client';
 import { compare } from 'bcryptjs';
@@ -6,7 +6,7 @@ import type { User as UserType } from '@/types';
 
 const prisma = new PrismaClient();
 
-export default NextAuth({
+const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -34,17 +34,22 @@ export default NextAuth({
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.id = user.id;
       }
       return token;
     },
-    async session({ session, token }) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async session({ session, token }: { session: any; token: any }) {
       if (session.user) {
         session.user.id = token.id as string;
       }
       return session;
     },
   },
-} as NextAuthOptions);
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default (NextAuth as any)(authOptions);

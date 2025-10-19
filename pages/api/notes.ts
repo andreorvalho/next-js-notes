@@ -10,7 +10,10 @@ const noteSchema = z.object({
   content: z.string(),
 });
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method === HTTP_POST) {
     const parseResult = noteSchema.safeParse(req.body);
     if (!parseResult.success) {
@@ -25,19 +28,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === HTTP_GET) {
     const { search, orderBy, orderDirection } = req.query;
 
-    const where = search ? {
-      OR: [
-        { title: { contains: search as string, mode: 'insensitive' as const } },
-        { content: { contains: search as string, mode: 'insensitive' as const } }
-      ]
-    } : {};
+    const where = search
+      ? {
+          OR: [
+            {
+              title: {
+                contains: search as string,
+                mode: 'insensitive' as const,
+              },
+            },
+            {
+              content: {
+                contains: search as string,
+                mode: 'insensitive' as const,
+              },
+            },
+          ],
+        }
+      : {};
 
-    const orderByField = orderBy as string || 'updated_at';
+    const orderByField = (orderBy as string) || 'updated_at';
     const orderDirectionValue = orderDirection === 'asc' ? 'asc' : 'desc';
 
     const notes = await prisma.note.findMany({
       where,
-      orderBy: { [orderByField]: orderDirectionValue }
+      orderBy: { [orderByField]: orderDirectionValue },
     });
 
     return res.json(notes);

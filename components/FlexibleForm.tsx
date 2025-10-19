@@ -132,9 +132,8 @@ export function FlexibleForm({
       return null;
     }
 
-    const titleClassName = layout === 'document'
-      ? 'note-title'
-      : 'mt-6 text-2xl font-semibold';
+    const titleClassName =
+      layout === 'document' ? 'note-title' : 'mt-6 text-2xl font-semibold';
 
     return (
       <h1
@@ -151,9 +150,8 @@ export function FlexibleForm({
       return null;
     }
 
-    const subtitleClassName = layout === 'document'
-      ? 'note-meta'
-      : 'mt-2 text-sm';
+    const subtitleClassName =
+      layout === 'document' ? 'note-meta' : 'mt-2 text-sm';
 
     return (
       <p
@@ -265,7 +263,10 @@ export function FlexibleForm({
         return (
           <div key={key} className="field-container">
             {field.label && (
-              <label className="form-label" style={{ color: 'var(--color-text-secondary)' }}>
+              <label
+                className="form-label"
+                style={{ color: 'var(--color-text-secondary)' }}
+              >
                 {field.label}
               </label>
             )}
@@ -280,12 +281,18 @@ export function FlexibleForm({
               contentClassName={field.contentClassName}
             />
             {field.helpText && (
-              <p className="text-sm mt-1" style={{ color: 'var(--color-text-tertiary)' }}>
+              <p
+                className="text-sm mt-1"
+                style={{ color: 'var(--color-text-tertiary)' }}
+              >
                 {field.helpText}
               </p>
             )}
             {field.error && (
-              <p className="text-sm mt-1" style={{ color: 'var(--color-error)' }}>
+              <p
+                className="text-sm mt-1"
+                style={{ color: 'var(--color-error)' }}
+              >
                 {field.error}
               </p>
             )}

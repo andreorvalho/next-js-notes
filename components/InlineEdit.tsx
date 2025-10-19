@@ -75,7 +75,9 @@ export function InlineEdit({
     setIsEditing(false);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setEditValue(e.target.value);
   };
 

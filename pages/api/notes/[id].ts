@@ -10,7 +10,10 @@ const noteSchema = z.object({
   content: z.string(),
 });
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method === HTTP_GET) {
     const { id } = req.query;
 
@@ -20,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
       const note = await prisma.note.findUnique({
-        where: { id: parseInt(id) }
+        where: { id: parseInt(id) },
       });
 
       if (!note) {
@@ -51,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const note = await prisma.note.update({
         where: { id: parseInt(id) },
-        data: { title, content }
+        data: { title, content },
       });
 
       return res.json(note);

@@ -56,7 +56,15 @@ export default function NotesPage() {
       return;
     }
     fetchNotes();
-  }, [isLoadingAuth, session, searchQuery, sortField, sortDirection, fetchNotes, router]);
+  }, [
+    isLoadingAuth,
+    session,
+    searchQuery,
+    sortField,
+    sortDirection,
+    fetchNotes,
+    router,
+  ]);
 
   const handleLogout = useCallback(async () => {
     await signOut({ redirect: false });
@@ -96,13 +104,15 @@ export default function NotesPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: title.trim() || 'Untitled Note',
-          content: content.trim() || ''
+          content: content.trim() || '',
         }),
       });
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data?.error ? JSON.stringify(data.error) : 'Failed to save note');
+        setError(
+          data?.error ? JSON.stringify(data.error) : 'Failed to save note'
+        );
         return;
       }
 
@@ -138,15 +148,15 @@ export default function NotesPage() {
     saveNote();
   }, [saveNote]);
 
-
-  if (isLoadingAuth || isLoading) return (
-    <div className="min-h-screen relative overflow-hidden animate-fade-in">
-      <div className="absolute inset-0 bg-app-gradient" />
-      <div className="relative flex items-center justify-center min-h-screen">
-        <div className="text-text-primary">Loading...</div>
+  if (isLoadingAuth || isLoading)
+    return (
+      <div className="min-h-screen relative overflow-hidden animate-fade-in">
+        <div className="absolute inset-0 bg-app-gradient" />
+        <div className="relative flex items-center justify-center min-h-screen">
+          <div className="text-text-primary">Loading...</div>
+        </div>
       </div>
-    </div>
-  );
+    );
 
   if (!session) return null;
 
@@ -167,7 +177,9 @@ export default function NotesPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-text-primary">Notes</h1>
-              <p className="text-text-secondary text-sm">{notes.length} notes</p>
+              <p className="text-text-secondary text-sm">
+                {notes.length} notes
+              </p>
             </div>
 
             <div className="flex items-center space-x-4">
@@ -201,7 +213,9 @@ export default function NotesPage() {
             onSortToggle={() => setShowSortOptions(!showSortOptions)}
             onSortFieldChange={setSortField}
             onSortDirectionChange={setSortDirection}
-            onViewModeToggle={() => setViewMode(viewMode === 'kanban' ? 'list' : 'kanban')}
+            onViewModeToggle={() =>
+              setViewMode(viewMode === 'kanban' ? 'list' : 'kanban')
+            }
           />
 
           <NoteForm

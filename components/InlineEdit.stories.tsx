@@ -48,7 +48,8 @@ export const WithContent: Story = {
 
 export const Multiline: Story = {
   args: {
-    value: 'This is a multiline text.\nYou can edit it by clicking on it.\nPress Ctrl+Enter to save.',
+    value:
+      'This is a multiline text.\nYou can edit it by clicking on it.\nPress Ctrl+Enter to save.',
     onChange: () => {},
     onSave: () => {},
     placeholder: 'Enter multiline text here',
@@ -69,7 +70,8 @@ export const TitleStyle: Story = {
 
 export const ContentStyle: Story = {
   args: {
-    value: 'This is the content of the note. It can be quite long and will wrap to multiple lines as needed.',
+    value:
+      'This is the content of the note. It can be quite long and will wrap to multiple lines as needed.',
     onChange: () => {},
     onSave: () => {},
     placeholder: 'Start writing your note content here...',
@@ -82,7 +84,9 @@ export const ContentStyle: Story = {
 export const Interactive: Story = {
   render: () => {
     const [title, setTitle] = useState('Interactive Title');
-    const [content, setContent] = useState('This is interactive content. Click to edit!');
+    const [content, setContent] = useState(
+      'This is interactive content. Click to edit!'
+    );
     const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
     const handleSave = () => {
@@ -92,7 +96,10 @@ export const Interactive: Story = {
     return (
       <div className="space-y-4">
         <div>
-          <h3 className="text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>
+          <h3
+            className="text-sm font-medium mb-2"
+            style={{ color: 'var(--color-text-secondary)' }}
+          >
             Title
           </h3>
           <InlineEdit
@@ -106,7 +113,10 @@ export const Interactive: Story = {
         </div>
 
         <div>
-          <h3 className="text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>
+          <h3
+            className="text-sm font-medium mb-2"
+            style={{ color: 'var(--color-text-secondary)' }}
+          >
             Content
           </h3>
           <InlineEdit
@@ -121,7 +131,10 @@ export const Interactive: Story = {
         </div>
 
         {lastSaved && (
-          <p className="text-xs" style={{ color: 'var(--color-text-tertiary)' }}>
+          <p
+            className="text-xs"
+            style={{ color: 'var(--color-text-tertiary)' }}
+          >
             Last saved: {lastSaved.toLocaleTimeString()}
           </p>
         )}
