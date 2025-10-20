@@ -173,7 +173,7 @@ export default function Home() {
 
       <div className="relative text-text-primary">
         {/* Header */}
-        <div className="sticky top-0 bg-surface border-b border-border px-4 py-4 backdrop-blur-sm">
+        <div className="sticky top-0 bg-surface border-b border-border px-4 py-4 backdrop-blur-sm z-[1020]">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-text-primary">Notes</h1>

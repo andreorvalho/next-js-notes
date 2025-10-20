@@ -20,12 +20,8 @@ describe('User Login and Logout', () => {
     // Check if notes counter is visible (should show seeded notes)
     cy.contains('notes').should('be.visible');
 
-    // Click the logout button (scroll to it first to ensure it's visible)
-    cy.get('button')
-      .contains('Logout')
-      .scrollIntoView()
-      .should('be.visible')
-      .click();
+    // Click the logout button
+    cy.get('button').contains('Logout').click();
 
     // Check if the user is redirected to the login page
     cy.url().should('eq', `${Cypress.config().baseUrl}/login`);

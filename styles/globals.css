@@ -457,7 +457,7 @@ body {
   position: fixed;
   top: var(--space-xl);
   right: var(--space-xl);
-  z-index: var(--z-fixed);
+  z-index: var(--z-dropdown);
   width: 3rem;
   height: 3rem;
   border-radius: var(--radius-full);
