@@ -9,11 +9,11 @@ describe('Create Note', () => {
   });
 
   it('should create a new note and see it in the list', () => {
-    // Visit the notes page
-    cy.visit('/notes');
+    // Visit the home page (notes page)
+    cy.visit('/');
 
     // Wait for the page to load and verify we're on the correct page
-    cy.url().should('include', '/notes');
+    cy.url().should('eq', `${Cypress.config().baseUrl}/`);
 
     // Click on the "New" button in the sidebar to create a new note
     cy.contains('button', 'New', { timeout: 10000 }).click();

@@ -11,11 +11,14 @@ describe('User Login and Logout', () => {
     // Submit the login form
     cy.get('button[type="submit"]').click();
 
-    // Check if the user is redirected to the home page
+    // Check if the user is redirected to the home page (notes page)
     cy.url().should('eq', `${Cypress.config().baseUrl}/`);
 
-    // Check if the user's name is displayed on the home page
-    cy.contains('Welcome, Test User').should('be.visible');
+    // Check if the notes page header is displayed
+    cy.contains('h1', 'Notes').should('be.visible');
+
+    // Check if notes counter is visible (should show seeded notes)
+    cy.contains('notes').should('be.visible');
 
     // Click the logout button
     cy.get('button').contains('Logout').click();
