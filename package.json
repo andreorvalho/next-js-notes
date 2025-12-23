@@ -10,7 +10,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "type-check": "tsc --noEmit",
-    "test": "npx dotenv-cli -e .env.test -- npx prisma migrate deploy && npx dotenv-cli -e .env.test -- next dev -p 3001 & npx wait-on http://localhost:3001 --timeout 30000 && npx dotenv-cli -e .env.test -- cypress run --config-file cypress.config.js; pkill -f 'next dev -p 3001' || true",
+    "test": "npx dotenv-cli -e .env.test -- npx prisma migrate deploy && npx dotenv-cli -e .env.test -- sh -c \"PORT_PID=$(lsof -ti tcp:3001 || true); if [ -n \\\"$PORT_PID\\\" ]; then kill $PORT_PID >/dev/null 2>&1 || true; fi; npm run dev:test & SERVER_PID=$!; trap 'kill \\\"$SERVER_PID\\\" >/dev/null 2>&1 || true' EXIT; npx wait-on http://localhost:3001 && npx cypress run --config-file cypress.config.js\"",
     "test:cypress": "npx dotenv-cli -e .env.test -- cypress run --config-file cypress.config.js",
     "test:open": "npx dotenv-cli -e .env.test -- cypress open --config-file cypress.config.js",
     "dev:test": "npx dotenv-cli -e .env.test -- next dev -p 3001",
@@ -49,10 +49,14 @@
     "eslint-config-next": "^15.5.4",
     "eslint-plugin-storybook": "^9.1.10",
     "prettier": "^3.6.2",
+    "prisma": "^6.17.1",
     "storybook": "^9.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "wait-on": "^9.0.1"
+  },
+  "overrides": {
+    "flat-cache": "^4.0.1"
   },
   "prisma": {
     "seed": "node -r ts-node/register/transpile-only prisma/seed.ts"
