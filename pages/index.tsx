@@ -89,8 +89,10 @@ export default function Home() {
     setSuccess(undefined);
   }, []);
 
-  const saveNote = useCallback(async () => {
-    if (!title.trim() && !content.trim()) return;
+  const saveNote = useCallback(async (overrideTitle?: string, overrideContent?: string) => {
+    const titleToSave = overrideTitle !== undefined ? overrideTitle : title;
+    const contentToSave = overrideContent !== undefined ? overrideContent : content;
+    if (!titleToSave.trim() && !contentToSave.trim()) return;
 
     setIsSaving(true);
     setError(undefined);
@@ -98,14 +100,15 @@ export default function Home() {
     try {
       const method = selectedNote ? 'PUT' : 'POST';
       const url = selectedNote ? `/api/notes/${selectedNote.id}` : '/api/notes';
+      const payload = {
+        title: titleToSave.trim() || 'Untitled Note',
+        content: contentToSave.trim() || '',
+      };
 
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: title.trim() || 'Untitled Note',
-          content: content.trim() || '',
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -118,6 +121,13 @@ export default function Home() {
 
       const savedNote: Note = await res.json();
       setSelectedNote(savedNote);
+      // Update state with saved values to keep in sync
+      if (overrideTitle !== undefined) {
+        setTitle(savedNote.title);
+      }
+      if (overrideContent !== undefined) {
+        setContent(savedNote.content);
+      }
       setSuccess('Note saved');
 
       // Clear success message after 2 seconds
@@ -140,12 +150,12 @@ export default function Home() {
     setContent(newContent);
   }, []);
 
-  const handleTitleSave = useCallback(() => {
-    saveNote();
+  const handleTitleSave = useCallback((newTitle?: string) => {
+    saveNote(newTitle, undefined);
   }, [saveNote]);
 
-  const handleContentSave = useCallback(() => {
-    saveNote();
+  const handleContentSave = useCallback((newContent?: string) => {
+    saveNote(undefined, newContent);
   }, [saveNote]);
 
   if (isLoadingAuth || isLoading)

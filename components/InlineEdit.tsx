@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 type InlineEditProps = {
   value: string;
   onChange: (value: string) => void;
-  onSave: () => void;
+  onSave: (value?: string) => void;
   placeholder?: string;
   multiline?: boolean;
   className?: string;
@@ -70,6 +70,8 @@ export function InlineEdit({
   const handleSave = () => {
     if (editValue.trim() !== value) {
       onChange(editValue);
+      onSave(editValue);
+    } else {
       onSave();
     }
     setIsEditing(false);

@@ -30,7 +30,7 @@ export default async function handler(
         return res.status(404).json({ error: 'Note not found' });
       }
 
-      return res.json(note);
+      return res.status(200).json(note);
     } catch (error) {
       console.error('Error fetching note:', error);
       return res.status(500).json({ error: 'Internal server error' });
@@ -56,8 +56,7 @@ export default async function handler(
         where: { id: parseInt(id) },
         data: { title, content },
       });
-
-      return res.json(note);
+      return res.status(200).json(note);
     } catch (error) {
       console.error('Error updating note:', error);
       return res.status(500).json({ error: 'Failed to update note' });

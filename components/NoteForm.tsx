@@ -1,5 +1,13 @@
 import { Note } from '@/types';
 import { FlexibleForm } from '@/components/FlexibleForm';
+import { formatDate } from '@/helpers/date';
+
+const subtitle = (selectedNote: Note | null) => {
+  if (selectedNote) {
+    return `Created: ${formatDate(selectedNote.created_at)} • Last updated: ${formatDate(selectedNote.updated_at)}`;
+  }
+  return 'Start typing to create your note...';
+};
 
 interface NoteFormProps {
   selectedNote: Note | null;
@@ -11,8 +19,8 @@ interface NoteFormProps {
   isSaving: boolean;
   onTitleChange: (title: string) => void;
   onContentChange: (content: string) => void;
-  onTitleSave: () => void;
-  onContentSave: () => void;
+  onTitleSave: (title?: string) => void;
+  onContentSave: (content?: string) => void;
   onNewNote: () => void;
 }
 
@@ -30,58 +38,40 @@ export default function NoteForm({
   onContentSave,
   onNewNote,
 }: NoteFormProps) {
-  return (
-    <div className="flex-1 overflow-y-auto">
-      {selectedNote || isEditing ? (
+  const fields = [
+    {
+      type: 'inline' as const,
+      name: 'title',
+      value: title,
+      onChange: onTitleChange,
+      onSave: onTitleSave,
+      placeholder: 'Note title',
+      className: 'note-title',
+      titleClassName: 'note-title',
+    },
+    {
+      type: 'inline' as const,
+      name: 'content',
+      value: content,
+      onChange: onContentChange,
+      onSave: onContentSave,
+      placeholder: 'Start writing your note content here...',
+      multiline: true,
+      className: 'note-content',
+      contentClassName: 'note-content',
+    },
+  ];
+
+  if (selectedNote || isEditing) {
+    return(
+      <div className="flex-1 overflow-y-auto">
         <div className="h-full">
           <FlexibleForm
             layout="document"
-            fields={[
-              {
-                type: 'inline' as const,
-                name: 'title',
-                value: title,
-                onChange: onTitleChange,
-                onSave: onTitleSave,
-                placeholder: 'Note title',
-                className: 'note-title',
-                titleClassName: 'note-title',
-              },
-              {
-                type: 'inline' as const,
-                name: 'content',
-                value: content,
-                onChange: onContentChange,
-                onSave: onContentSave,
-                placeholder: 'Start writing your note content here...',
-                multiline: true,
-                className: 'note-content',
-                contentClassName: 'note-content',
-              },
-            ]}
+            fields={fields}
             error={error}
             success={success}
-            subtitle={
-              selectedNote
-                ? `Created: ${new Date(
-                    selectedNote.created_at
-                  ).toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })} • Last updated: ${new Date(
-                    selectedNote.updated_at
-                  ).toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}`
-                : 'Start typing to create your note...'
-            }
+            subtitle={subtitle(selectedNote || null)}
             showLogo={false}
           />
 
@@ -93,39 +83,43 @@ export default function NoteForm({
             </div>
           )}
         </div>
-      ) : (
-        <div className="h-full flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-surface rounded-full flex items-center justify-center">
-              <svg
-                className="w-8 h-8 text-text-tertiary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold text-text-primary mb-2">
-              Select a note to view
-            </h3>
-            <p className="text-text-secondary text-sm mb-4">
-              Choose a note from the list to start reading or editing
-            </p>
-            <button
-              onClick={onNewNote}
-              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors text-white"
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex-1 overflow-y-auto">
+      <div className="h-full flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 bg-surface rounded-full flex items-center justify-center">
+            <svg
+              className="w-8 h-8 text-text-tertiary"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              Create New Note
-            </button>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
           </div>
+          <h3 className="text-lg font-semibold text-text-primary mb-2">
+            Select a note to view
+          </h3>
+          <p className="text-text-secondary text-sm mb-4">
+            Choose a note from the list to start reading or editing
+          </p>
+          <button
+            onClick={onNewNote}
+            className="px-4 py-2 bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors"
+          >
+            Create New Note
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }

@@ -19,7 +19,7 @@ type InlineField = {
   name: string;
   value: string;
   onChange: (value: string) => void;
-  onSave: () => void;
+  onSave: (value?: string) => void;
   placeholder?: string;
   multiline?: boolean;
   className?: string;

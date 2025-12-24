@@ -53,7 +53,10 @@ describe('Create Note', () => {
       .should('be.visible')
       .should('be.focused')
       .clear()
-      .type('This is the content of my test note.{ctrl+enter}');
+      .type('This is the content of my test note.');
+
+    // Blur the textarea to trigger save
+    cy.get('textarea.inline-edit-input').blur();
 
     // Wait for the API call to update the note
     cy.wait('@updateNote', { timeout: 10000 })

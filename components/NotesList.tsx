@@ -160,7 +160,7 @@ export default function NotesList({
               {/* Create Note Button */}
               <button
                 onClick={onNewNote}
-                className="px-3 py-2 bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors text-white flex items-center gap-2 text-sm"
+                className="p-2 hover:bg-surface-elevated rounded-lg transition-colors text-text-secondary hover:text-text-primary"
               >
                 <svg
                   className="w-3 h-3"

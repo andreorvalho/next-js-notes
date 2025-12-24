@@ -21,8 +21,12 @@ export default async function handler(
     }
 
     const { title, content } = parseResult.data;
-    const note = await prisma.note.create({ data: { title, content } });
-    return res.status(201).json(note);
+    try {
+      const note = await prisma.note.create({ data: { title, content } });
+      return res.status(200).json(note);
+    } catch (error) {
+      return res.status(500).json({ error: 'Failed to create note' });
+    }
   }
 
   if (req.method === HTTP_GET) {
@@ -50,12 +54,15 @@ export default async function handler(
     const orderByField = (orderBy as string) || 'updated_at';
     const orderDirectionValue = orderDirection === 'asc' ? 'asc' : 'desc';
 
-    const notes = await prisma.note.findMany({
-      where,
-      orderBy: { [orderByField]: orderDirectionValue },
-    });
-
-    return res.json(notes);
+    try {
+      const notes = await prisma.note.findMany({
+        where,
+        orderBy: { [orderByField]: orderDirectionValue },
+      });
+      return res.json(notes);
+    } catch (error) {
+      return res.status(500).json({ error: 'Failed to fetch notes' });
+    }
   }
 
   return res.status(405).json({ error: 'Method not allowed' });

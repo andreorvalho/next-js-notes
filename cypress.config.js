@@ -5,6 +5,8 @@ module.exports = defineConfig({
   e2e: {
     nodeVersion: 'system',
     baseUrl: 'http://localhost:3001',
+    // Configure screenshot folder (default is cypress/screenshots)
+    screenshotsFolder: 'cypress/screenshots',
     setupNodeEvents(on, config) {
       // Reuse existing plugins file
       return require('./cypress/plugins/index.js')(on, config);
