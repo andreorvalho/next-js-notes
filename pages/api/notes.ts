@@ -24,7 +24,7 @@ export default async function handler(
     try {
       const note = await prisma.note.create({ data: { title, content } });
       return res.status(200).json(note);
-    } catch (error) {
+    } catch {
       return res.status(500).json({ error: 'Failed to create note' });
     }
   }
@@ -60,7 +60,7 @@ export default async function handler(
         orderBy: { [orderByField]: orderDirectionValue },
       });
       return res.json(notes);
-    } catch (error) {
+    } catch {
       return res.status(500).json({ error: 'Failed to fetch notes' });
     }
   }
