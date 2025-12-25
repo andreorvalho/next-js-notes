@@ -63,7 +63,7 @@ export default function NoteForm({
   ];
 
   if (selectedNote || isEditing) {
-    return(
+    return (
       <div className="flex-1 overflow-y-auto">
         <div className="h-full">
           <FlexibleForm

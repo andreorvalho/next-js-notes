@@ -89,58 +89,64 @@ export default function Home() {
     setSuccess(undefined);
   }, []);
 
-  const saveNote = useCallback(async (overrideTitle?: string, overrideContent?: string) => {
-    const titleToSave = overrideTitle !== undefined ? overrideTitle : title;
-    const contentToSave = overrideContent !== undefined ? overrideContent : content;
-    if (!titleToSave.trim() && !contentToSave.trim()) return;
+  const saveNote = useCallback(
+    async (overrideTitle?: string, overrideContent?: string) => {
+      const titleToSave = overrideTitle !== undefined ? overrideTitle : title;
+      const contentToSave =
+        overrideContent !== undefined ? overrideContent : content;
+      if (!titleToSave.trim() && !contentToSave.trim()) return;
 
-    setIsSaving(true);
-    setError(undefined);
+      setIsSaving(true);
+      setError(undefined);
 
-    try {
-      const method = selectedNote ? 'PUT' : 'POST';
-      const url = selectedNote ? `/api/notes/${selectedNote.id}` : '/api/notes';
-      const payload = {
-        title: titleToSave.trim() || 'Untitled Note',
-        content: contentToSave.trim() || '',
-      };
+      try {
+        const method = selectedNote ? 'PUT' : 'POST';
+        const url = selectedNote
+          ? `/api/notes/${selectedNote.id}`
+          : '/api/notes';
+        const payload = {
+          title: titleToSave.trim() || 'Untitled Note',
+          content: contentToSave.trim() || '',
+        };
 
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        setError(
-          data?.error ? JSON.stringify(data.error) : 'Failed to save note'
-        );
-        return;
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          setError(
+            data?.error ? JSON.stringify(data.error) : 'Failed to save note'
+          );
+          return;
+        }
+
+        const savedNote: Note = await res.json();
+        setSelectedNote(savedNote);
+        // Update state with saved values to keep in sync
+        if (overrideTitle !== undefined) {
+          setTitle(savedNote.title);
+        }
+        if (overrideContent !== undefined) {
+          setContent(savedNote.content);
+        }
+        setSuccess('Note saved');
+
+        // Clear success message after 2 seconds
+        setTimeout(() => setSuccess(undefined), 2000);
+
+        // Refresh notes list
+        fetchNotes();
+      } catch {
+        setError('Network error');
+      } finally {
+        setIsSaving(false);
       }
-
-      const savedNote: Note = await res.json();
-      setSelectedNote(savedNote);
-      // Update state with saved values to keep in sync
-      if (overrideTitle !== undefined) {
-        setTitle(savedNote.title);
-      }
-      if (overrideContent !== undefined) {
-        setContent(savedNote.content);
-      }
-      setSuccess('Note saved');
-
-      // Clear success message after 2 seconds
-      setTimeout(() => setSuccess(undefined), 2000);
-
-      // Refresh notes list
-      fetchNotes();
-    } catch {
-      setError('Network error');
-    } finally {
-      setIsSaving(false);
-    }
-  }, [title, content, selectedNote, fetchNotes]);
+    },
+    [title, content, selectedNote, fetchNotes]
+  );
 
   const handleTitleChange = useCallback((newTitle: string) => {
     setTitle(newTitle);
@@ -150,13 +156,19 @@ export default function Home() {
     setContent(newContent);
   }, []);
 
-  const handleTitleSave = useCallback((newTitle?: string) => {
-    saveNote(newTitle, undefined);
-  }, [saveNote]);
+  const handleTitleSave = useCallback(
+    (newTitle?: string) => {
+      saveNote(newTitle, undefined);
+    },
+    [saveNote]
+  );
 
-  const handleContentSave = useCallback((newContent?: string) => {
-    saveNote(undefined, newContent);
-  }, [saveNote]);
+  const handleContentSave = useCallback(
+    (newContent?: string) => {
+      saveNote(undefined, newContent);
+    },
+    [saveNote]
+  );
 
   if (isLoadingAuth || isLoading)
     return (
