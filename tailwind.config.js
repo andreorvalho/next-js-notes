@@ -35,6 +35,7 @@ module.exports = {
           900: 'var(--color-secondary-900)',
         },
         surface: 'var(--color-surface)',
+        'surface-elevated': 'var(--color-surface-elevated)',
         background: 'var(--color-background)',
         'text-primary': 'var(--color-text-primary)',
         'text-secondary': 'var(--color-text-secondary)',

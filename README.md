@@ -163,7 +163,19 @@ touch types/index.ts
 ## 5. Run server
 
 ```bash
-  npm run dev
+  npx dotenv -e .env.test -- npx prisma migrate reset --force
 ```
 
-// 11. Deploy Frontend on Vercel and Database on Railway/Supabase
+## 6. Run tests
+
+```bash
+  npx dotenv -e .env.test -- npx prisma migrate reset --force
+  npx dotenv -e .env.test -- npx run dev:test
+  npx dotenv -e .env.test -- npx cypress run --config-file cypress.config.js
+```
+
+or simply
+
+```bash
+  npx dotenv -e .env.test -- npx run test
+```

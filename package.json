@@ -11,6 +11,8 @@
     "format:check": "prettier --check .",
     "type-check": "tsc --noEmit",
     "test": "npx dotenv-cli -e .env.test -- npx prisma migrate deploy && npx dotenv-cli -e .env.test -- sh -c \"PORT_PID=$(lsof -ti tcp:3001 || true); if [ -n \\\"$PORT_PID\\\" ]; then kill $PORT_PID >/dev/null 2>&1 || true; fi; npm run dev:test & SERVER_PID=$!; trap 'kill \\\"$SERVER_PID\\\" >/dev/null 2>&1 || true' EXIT; npx wait-on http://localhost:3001 && npx cypress run --config-file cypress.config.js\"",
+    "test:cypress": "npx dotenv-cli -e .env.test -- cypress run --config-file cypress.config.js",
+    "test:open": "npx dotenv-cli -e .env.test -- cypress open --config-file cypress.config.js",
     "dev:test": "npx dotenv-cli -e .env.test -- next dev -p 3001",
     "ci": "npm run type-check && npm run lint && npm run format:check && npm run test",
     "storybook": "storybook dev -p 6006",
@@ -32,7 +34,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.37.0",
-    "@storybook/nextjs-vite": "^9.1.10",
+    "@storybook/addon-a11y": "^9.1.12",
+    "@storybook/addon-docs": "^9.1.12",
+    "@storybook/addon-onboarding": "^9.1.12",
+    "@storybook/nextjs": "^9.1.12",
     "@types/bluebird": "^3.5.42",
     "@types/node": "^24.7.2",
     "@types/react": "^19.2.2",
@@ -49,6 +54,9 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "wait-on": "^9.0.1"
+  },
+  "overrides": {
+    "flat-cache": "^4.0.1"
   },
   "prisma": {
     "seed": "node -r ts-node/register/transpile-only prisma/seed.ts"
