@@ -164,20 +164,18 @@ touch types/index.ts
 
 ```bash
   npx dotenv -e .env.test -- npx prisma migrate reset --force
-  npm run dev
 ```
 
-// 11. Deploy Frontend on Vercel and Database on Railway/Supabase
+## 6. Run tests
 
-    cy.get('button').then(($buttons) => {
-      console.log(`Found ${$buttons.length} button(s) on the page:`);
-      $buttons.each((index, button) => {
-        const $button = Cypress.$(button);
-        const text = $button.text().trim();
-        const classes = $button.attr('class') || '';
-        const id = $button.attr('id') || '';
-        const ariaLabel = $button.attr('aria-label') || '';
-        const isVisible = $button.is(':visible');
-        console.log(`Button ${index + 1}: text="${text}", classes="${classes}", id="${id}", aria-label="${ariaLabel}", visible=${isVisible}`);
-      });
-    });
+```bash
+  npx dotenv -e .env.test -- npx prisma migrate reset --force
+  npx dotenv -e .env.test -- npx run dev:test
+  npx dotenv -e .env.test -- npx cypress run --config-file cypress.config.js
+```
+
+or simply
+
+```bash
+  npx dotenv -e .env.test -- npx run test
+```
