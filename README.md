@@ -179,3 +179,14 @@ or simply
 ```bash
   npx dotenv -e .env.test -- npx run test
 ```
+
+deployment:
+
+We are deploying on vercel.
+We need to add a new instance of neon as the database.
+Add a few environment variables:
+
+new jwt with
+```bash
+  openssl rand -hex 32
+```
