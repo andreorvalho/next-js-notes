@@ -187,6 +187,7 @@ We need to add a new instance of neon as the database.
 Add a few environment variables:
 
 new jwt with
+
 ```bash
   openssl rand -hex 32
 ```
