@@ -1,27 +1,18 @@
-# Full Next.js + Prisma App
-
-This is a guide for setting up a simple **Next.js** application with **Prisma** for database management. The app includes basic user functionality, such as listing and adding users.
-
 ## Table of Contents
 
 - [Installation](#installation)
-- [Prisma Setup](#prisma-setup)
-- [Seeding Database](#seeding-database)
-- [API Routes](#api-routes)
-- [UI Implementation](#ui-implementation)
-- [Git Setup](#git-setup)
+- [Database Setup](#database-setup)
 - [Running the App](#running-the-app)
+- [Testing](#testing)
 - [Deploying](#deploying)
 
 ## Installation
 
 To get started, you'll need to install the following dependencies:
 
-```bash
-npm i -D ts-node typescript @types/node @types/react
-```
+Postgres
 
-## 2. Database Setup
+## Database Setup
 
 Create the database in postgres:
 
@@ -30,164 +21,82 @@ psql postgres
 ```
 
 ```sql
-CREATE DATABASE magicbook;
-CREATE USER magicbook_admin WITH PASSWORD 'magicbook_password';
-ALTER USER magicbook_admin CREATEDB;
-GRANT ALL PRIVILEGES ON DATABASE magicbook TO magicbook_admin;
+CREATE DATABASE next_js_template;
+CREATE USER next_js_template_admin WITH PASSWORD 'next_js_template_passsword';
+ALTER USER next_js_template_admin CREATEDB;
+GRANT ALL PRIVILEGES ON DATABASE next_js_template TO next_js_template_admin;
 ```
 
-Run the following command to initialize Prisma:
+Migrate the database:
 
 ```bash
-npx prisma init
-echo DATABASE_URL="postgresql://magicbook_admin:magicbook_password@localhost:5432/magicbook?schema=public" > .env
+npx dotenv-cli -e .env.development npx prisma migrate deploy
 ```
 
-Add this code to prisma/schema.prisma
-
-```js
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
-}
-```
-
-Run migrations
+seed the database:
 
 ```bash
-npx npx prisma migrate dev --name init
+npx dotenv-cli -e .env.development npx prisma db seed
 ```
 
-Create a seeds file
+## Running the App
 
 ```bash
-touch prisma/seed.ts
+  npm run dev
 ```
 
-Add this code to it.
+## Testing
 
-```js
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
-async function main() {
-  await prisma.user.createMany({
-    data: [
-      { name: 'John Doe', email: 'john@example.com' },
-      { name: 'Jane Doe', email: 'jane@example.com' },
-    ],
-  });
-}
-```
-
-Run the seeds
+Setup test database and server:
 
 ```bash
-npx prisma db seed
+psql postgres
 ```
 
-## 3. Create APP files
+```sql
+CREATE DATABASE next_js_template_test;
+CREATE USER next_js_template_admin_test WITH PASSWORD 'next_js_template_passsword_test';
+ALTER USER next_js_template_admin_test CREATEDB;
+GRANT ALL PRIVILEGES ON DATABASE next_js_template_test TO next_js_template_admin_test;
+```
+
+create a .env.test file with a `DATABASE_URL` value using these new values as per `.env.development.example`. Also with a `JWT_SECRET`
 
 ```bash
-mkdir pages
-cd pages
-mkdir api
-cd api
-touch users.ts
+  NODE_ENV=test npx dotenv -e .env.test -- npx prisma generate
+  NODE_ENV=test npx dotenv -e .env.test -- npx prisma migrate reset --force
+  npm run dev:test
 ```
 
-Add this code
-
-```js
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
-export default async function handler(req, res) {
-  if (req.method === 'GET') {
-    const users = await prisma.user.findMany();
-    return res.json(users);
-  }
-  if (req.method === 'POST') {
-    const { name, email } = req.body;
-    const newUser = await prisma.user.create({ data: { name, email } });
-    return res.status(201).json(newUser);
-  }
-}
-```
+Run tests on terminal
 
 ```bash
-touch pages/index.tsx
+  npm run test:cypress
 ```
 
-Add this code there:
-
-```js
-import { useState, useEffect } from 'react';
-export default function Home() {
-  const [users, setUsers] = useState([]);
-  useEffect(() => {
-    fetch('/api/users')
-      .then((res) => res.json())
-      .then(setUsers);
-  }, []);
-  return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold">User List</h1>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            {user.name} ({user.email})
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-```
-
-## 4. Add types
+Run tests on browser
 
 ```bash
-mkdir -p types
-touch types/index.ts
+  npm run test:open
 ```
 
-## 5. Run server
+or to run the setup and the tests on the terminal do:
 
 ```bash
-  npx dotenv -e .env.test -- npx prisma migrate reset --force
+  npx dotenv -e .env.test -- npm run test
 ```
 
-## 6. Run tests
+## Deploying
 
-```bash
-  npx dotenv -e .env.test -- npx prisma migrate reset --force
-  npx dotenv -e .env.test -- npx run dev:test
-  npx dotenv -e .env.test -- npx cypress run --config-file cypress.config.js
-```
+You need to create 2 new variables
+JWT_SECRET=
+NEXTAUTH_SECRET=
 
-or simply
-
-```bash
-  npx dotenv -e .env.test -- npx run test
-```
-
-deployment:
-
-We are deploying on vercel.
-We need to add a new instance of neon as the database.
-Add a few environment variables:
-
-new jwt with
+Please check the env.development.example for more variables
+To create new values for the variables you can do:
 
 ```bash
   openssl rand -hex 32
 ```
+
+We are deployed on vercel.
