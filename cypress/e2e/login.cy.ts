@@ -1,4 +1,10 @@
 describe('User Login and Logout', () => {
+  before(() => {
+    // Reset the test database before running the tests
+    // This ensures the seeded test user exists
+    cy.task('resetTestDatabase');
+  });
+
   it('should login and display the user name', () => {
     // Visit the login page
     cy.visit('/login');

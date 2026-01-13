@@ -1,9 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '@lib/prisma';
 import { z } from 'zod';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { HTTP_GET, HTTP_POST } from '@/types';
-
-const prisma = new PrismaClient();
 
 const noteSchema = z.object({
   title: z.string().min(1),
