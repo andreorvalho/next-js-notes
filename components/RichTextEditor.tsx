@@ -2,10 +2,10 @@
 
 import { useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import 'react-quill/dist/quill.snow.css';
+import 'quill/dist/quill.snow.css';
 
 // Dynamically import ReactQuill to avoid SSR issues
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+const ReactQuill = dynamic(() => import('react-quill-ver2'), { ssr: false });
 
 type RichTextEditorProps = {
   value: string;
