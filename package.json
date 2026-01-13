@@ -1,5 +1,5 @@
 {
-  "name": "magicbook",
+  "name": "notabili",
   "version": "1.0.0",
   "scripts": {
     "postinstall": "prisma generate",
