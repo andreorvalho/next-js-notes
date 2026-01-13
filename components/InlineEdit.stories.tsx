@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { InlineEdit } from './InlineEdit';
 
@@ -86,7 +86,8 @@ export const ContentStyle: Story = {
 
 export const RichTextMode: Story = {
   args: {
-    value: '<p>This is <strong>rich text</strong> content with <em>formatting</em>.</p><ul><li>List item 1</li><li>List item 2</li></ul>',
+    value:
+      '<p>This is <strong>rich text</strong> content with <em>formatting</em>.</p><ul><li>List item 1</li><li>List item 2</li></ul>',
     onChange: () => {},
     onSave: () => {},
     placeholder: 'Click to edit with rich text editor',
@@ -99,7 +100,8 @@ export const RichTextMode: Story = {
 
 export const RichTextDisplay: Story = {
   args: {
-    value: '<h2>Rich Text Display</h2><p>This content is displayed as HTML. Click to edit with the rich text editor.</p><p>You can use <strong>bold</strong>, <em>italic</em>, and <u>underline</u> formatting.</p>',
+    value:
+      '<h2>Rich Text Display</h2><p>This content is displayed as HTML. Click to edit with the rich text editor.</p><p>You can use <strong>bold</strong>, <em>italic</em>, and <u>underline</u> formatting.</p>',
     onChange: () => {},
     onSave: () => {},
     placeholder: 'Click to start editing',
@@ -112,7 +114,8 @@ export const RichTextDisplay: Story = {
 
 export const RichTextEvernote: Story = {
   args: {
-    value: '<p>Content pasted from <strong>Evernote</strong>:</p><ul><li>Preserves formatting</li><li>Maintains lists</li><li>Keeps structure</li></ul><p>More content here...</p>',
+    value:
+      '<p>Content pasted from <strong>Evernote</strong>:</p><ul><li>Preserves formatting</li><li>Maintains lists</li><li>Keeps structure</li></ul><p>More content here...</p>',
     onChange: () => {},
     onSave: () => {},
     placeholder: 'Paste Evernote content here',

@@ -55,14 +55,17 @@ export function RichTextEditor({
       const quill = ref.getEditor();
       if (quill) {
         // Configure clipboard to handle HTML paste better
-        quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node: any, delta: any) => {
-          // Preserve more formatting from Evernote
-          if (node.tagName === 'EN-NOTE') {
-            // Evernote wraps content in EN-NOTE
+        quill.clipboard.addMatcher(
+          Node.ELEMENT_NODE,
+          (node: any, delta: any) => {
+            // Preserve more formatting from Evernote
+            if (node.tagName === 'EN-NOTE') {
+              // Evernote wraps content in EN-NOTE
+              return delta;
+            }
             return delta;
           }
-          return delta;
-        });
+        );
       }
     }
   }, []);

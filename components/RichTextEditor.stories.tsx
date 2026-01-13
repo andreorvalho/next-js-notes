@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { RichTextEditor } from './RichTextEditor';
 
@@ -75,7 +75,9 @@ export const EvernotePaste: Story = {
 
 export const Interactive: Story = {
   render: () => {
-    const [content, setContent] = useState('<p>Edit this content using the toolbar above!</p>');
+    const [content, setContent] = useState(
+      '<p>Edit this content using the toolbar above!</p>'
+    );
 
     return (
       <div className="space-y-4">

@@ -4,7 +4,9 @@ import type { Page } from '@/types';
  * Merge an array of pages back into a single HTML string
  * Pages are ordered by pageNumber
  */
-export function mergePagesIntoContent(pages: Page[] | null | undefined): string {
+export function mergePagesIntoContent(
+  pages: Page[] | null | undefined
+): string {
   // Handle null, undefined, or non-array input
   if (!pages || !Array.isArray(pages) || pages.length === 0) {
     return '';
@@ -12,7 +14,11 @@ export function mergePagesIntoContent(pages: Page[] | null | undefined): string 
 
   // Filter out any invalid pages and ensure they have content
   const validPages = pages.filter(
-    (page) => page && typeof page === 'object' && 'content' in page && 'pageNumber' in page
+    (page) =>
+      page &&
+      typeof page === 'object' &&
+      'content' in page &&
+      'pageNumber' in page
   );
 
   if (validPages.length === 0) {

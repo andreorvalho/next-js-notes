@@ -101,7 +101,10 @@ export default async function handler(
       });
 
       // Log for debugging if needed
-      if (notes.length > 0 && (!notes[0].pages || notes[0].pages.length === 0)) {
+      if (
+        notes.length > 0 &&
+        (!notes[0].pages || notes[0].pages.length === 0)
+      ) {
         console.warn('Note found without pages:', notes[0].id);
       }
 
@@ -127,7 +130,7 @@ export default async function handler(
       }
       return res.status(500).json({
         error: 'Failed to fetch notes',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        details: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   }
