@@ -849,3 +849,223 @@ body {
     display: none !important;
   }
 }
+
+/* ==========================================================================
+   Rich Text Editor (Quill)
+   ========================================================================== */
+
+.rich-text-editor {
+  width: 100%;
+}
+
+.rich-text-editor .ql-container {
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  min-height: 200px;
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+}
+
+.rich-text-editor .ql-toolbar {
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+  background-color: var(--color-gray-50);
+  border: 1px solid var(--color-border);
+  border-bottom: none;
+}
+
+.rich-text-editor .ql-container {
+  border: 1px solid var(--color-border);
+  border-top: none;
+}
+
+.rich-text-editor .ql-editor {
+  min-height: 200px;
+  color: var(--color-text-primary);
+}
+
+.rich-text-editor .ql-editor.ql-blank::before {
+  color: var(--color-text-tertiary);
+  font-style: normal;
+}
+
+.rich-text-editor .ql-stroke {
+  stroke: var(--color-text-secondary);
+}
+
+.rich-text-editor .ql-fill {
+  fill: var(--color-text-secondary);
+}
+
+.rich-text-editor .ql-picker-label {
+  color: var(--color-text-secondary);
+}
+
+.rich-text-editor .ql-picker-options {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.rich-text-editor .ql-picker-item:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-text-primary);
+}
+
+/* Dark mode for Quill */
+.dark .rich-text-editor .ql-toolbar {
+  background-color: var(--color-gray-800);
+  border-color: var(--color-gray-700);
+}
+
+.dark .rich-text-editor .ql-container {
+  background-color: var(--color-gray-900);
+  border-color: var(--color-gray-700);
+}
+
+.dark .rich-text-editor .ql-editor {
+  color: var(--color-text-primary);
+}
+
+.dark .rich-text-editor .ql-stroke {
+  stroke: var(--color-text-secondary);
+}
+
+.dark .rich-text-editor .ql-fill {
+  fill: var(--color-text-secondary);
+}
+
+.dark .rich-text-editor .ql-picker-label {
+  color: var(--color-text-secondary);
+}
+
+.dark .rich-text-editor .ql-picker-options {
+  background-color: var(--color-gray-800);
+  border-color: var(--color-gray-700);
+}
+
+.dark .rich-text-editor .ql-picker-item:hover {
+  background-color: var(--color-gray-700);
+}
+
+/* Rich text edit container */
+.rich-text-edit-container {
+  width: 100%;
+}
+
+.rich-text-edit-actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  justify-content: flex-end;
+}
+
+.rich-text-save-button,
+.rich-text-cancel-button {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid var(--color-border);
+}
+
+.rich-text-save-button {
+  background-color: var(--color-primary-600);
+  color: white;
+  border-color: var(--color-primary-600);
+}
+
+.rich-text-save-button:hover {
+  background-color: var(--color-primary-700);
+}
+
+.rich-text-cancel-button {
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+}
+
+.rich-text-cancel-button:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-text-primary);
+}
+
+.dark .rich-text-cancel-button {
+  background-color: var(--color-gray-800);
+  border-color: var(--color-gray-700);
+}
+
+.dark .rich-text-cancel-button:hover {
+  background-color: var(--color-gray-700);
+}
+
+/* Rendered HTML content */
+.rich-text-display {
+  width: 100%;
+  color: var(--color-text-primary);
+  line-height: 1.6;
+}
+
+.rich-text-display h1,
+.rich-text-display h2,
+.rich-text-display h3 {
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.rich-text-display h1 {
+  font-size: var(--font-size-2xl);
+}
+
+.rich-text-display h2 {
+  font-size: var(--font-size-xl);
+}
+
+.rich-text-display h3 {
+  font-size: var(--font-size-lg);
+}
+
+.rich-text-display p {
+  margin-bottom: var(--space-md);
+}
+
+.rich-text-display ul,
+.rich-text-display ol {
+  margin-bottom: var(--space-md);
+  padding-left: var(--space-xl);
+}
+
+.rich-text-display li {
+  margin-bottom: var(--space-xs);
+}
+
+.rich-text-display a {
+  color: var(--color-primary-600);
+  text-decoration: underline;
+}
+
+.rich-text-display a:hover {
+  color: var(--color-primary-700);
+}
+
+.rich-text-display strong {
+  font-weight: 600;
+}
+
+.rich-text-display em {
+  font-style: italic;
+}
+
+.rich-text-display u {
+  text-decoration: underline;
+}
+
+.rich-text-display s {
+  text-decoration: line-through;
+}

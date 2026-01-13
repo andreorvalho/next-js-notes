@@ -22,6 +22,7 @@ type InlineField = {
   onSave: (value?: string) => void;
   placeholder?: string;
   multiline?: boolean;
+  richText?: boolean;
   className?: string;
   titleClassName?: string;
   contentClassName?: string;
@@ -276,6 +277,7 @@ export function FlexibleForm({
               onSave={field.onSave}
               placeholder={field.placeholder}
               multiline={field.multiline}
+              richText={field.richText}
               className={field.className}
               titleClassName={field.titleClassName}
               contentClassName={field.contentClassName}

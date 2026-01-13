@@ -57,6 +57,7 @@ export default function NoteForm({
       onSave: onContentSave,
       placeholder: 'Start writing your note content here...',
       multiline: true,
+      richText: true,
       className: 'note-content',
       contentClassName: 'note-content',
     },

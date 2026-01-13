@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { RichTextEditor } from './RichTextEditor';
 
 type InlineEditProps = {
   value: string;
@@ -6,6 +7,7 @@ type InlineEditProps = {
   onSave: (value?: string) => void;
   placeholder?: string;
   multiline?: boolean;
+  richText?: boolean;
   className?: string;
   titleClassName?: string;
   contentClassName?: string;
@@ -17,6 +19,7 @@ export function InlineEdit({
   onSave,
   placeholder = '',
   multiline = false,
+  richText = false,
   className = '',
   titleClassName = '',
   contentClassName = '',
@@ -83,8 +86,43 @@ export function InlineEdit({
     setEditValue(e.target.value);
   };
 
+  const handleRichTextChange = (newValue: string) => {
+    setEditValue(newValue);
+    onChange(newValue);
+  };
+
   if (isEditing) {
-    if (multiline) {
+    if (richText && multiline) {
+      return (
+        <div className="rich-text-edit-container">
+          <RichTextEditor
+            value={editValue}
+            onChange={handleRichTextChange}
+            placeholder={placeholder}
+            className={contentClassName}
+          />
+          <div className="rich-text-edit-actions">
+            <button
+              type="button"
+              onClick={handleSave}
+              className="rich-text-save-button"
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setEditValue(value);
+                setIsEditing(false);
+              }}
+              className="rich-text-cancel-button"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      );
+    } else if (multiline) {
       return (
         <textarea
           ref={inputRef as React.RefObject<HTMLTextAreaElement>}
@@ -116,6 +154,21 @@ export function InlineEdit({
 
   const displayValue = value || placeholder;
   const isEmpty = !value;
+
+  // Render HTML content if richText is enabled
+  if (richText && multiline && !isEmpty) {
+    return (
+      <div
+        className={`inline-edit-display ${className} ${isEmpty ? 'inline-edit-empty' : ''}`}
+        onClick={handleClick}
+      >
+        <div
+          className={`rich-text-display ${contentClassName}`}
+          dangerouslySetInnerHTML={{ __html: value }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div

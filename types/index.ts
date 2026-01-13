@@ -24,10 +24,19 @@ export interface User {
   active: boolean;
 }
 
+export interface Page {
+  id: number;
+  noteId: number;
+  content: string;
+  pageNumber: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
 export interface Note {
   id: number;
   title: string;
-  content: string;
+  content: string; // This is merged from pages by API, UI never sees Page[]
   created_at: Date;
   updated_at: Date;
 }

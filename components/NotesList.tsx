@@ -63,6 +63,10 @@ export default function NotesList({
 
   const groupNotesByDate = (notes: Note[]) => {
     const groups: { [key: string]: Note[] } = {};
+    // Ensure notes is an array
+    if (!Array.isArray(notes)) {
+      return groups;
+    }
     notes.forEach((note) => {
       const date = formatDate(note.updated_at);
       if (!groups[date]) {
@@ -78,7 +82,9 @@ export default function NotesList({
     return content.substring(0, maxLength) + '...';
   };
 
-  const groupedNotes = groupNotesByDate(notes);
+  // Ensure notes is always an array
+  const safeNotes = Array.isArray(notes) ? notes : [];
+  const groupedNotes = groupNotesByDate(safeNotes);
 
   return (
     <div className="w-1/3 border-r border-border bg-surface/50 backdrop-blur-sm overflow-y-auto">
@@ -89,7 +95,7 @@ export default function NotesList({
             <div>
               <h1 className="text-xl font-bold text-text-primary">Notes</h1>
               <p className="text-text-secondary text-sm">
-                {notes.length} notes
+                {safeNotes.length} notes
               </p>
             </div>
 
@@ -308,7 +314,7 @@ export default function NotesList({
           </div>
         )}
 
-        {notes.length === 0 && !isLoading && (
+        {safeNotes.length === 0 && !isLoading && (
           <div className="text-center py-8">
             <p className="text-text-secondary text-sm">No notes found</p>
             <button

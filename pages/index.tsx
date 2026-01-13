@@ -40,10 +40,15 @@ export default function Home() {
       params.append('orderDirection', sortDirection);
 
       const response = await fetch(`/api/notes?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch notes: ${response.statusText}`);
+      }
       const data = await response.json();
-      setNotes(data);
+      // Ensure data is an array
+      setNotes(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch notes:', error);
+      setNotes([]); // Set empty array on error
     } finally {
       setIsLoading(false);
     }

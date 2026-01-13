@@ -17,7 +17,20 @@ model User {
 model Note {
   id         Int      @id @default(autoincrement())
   title      String
-  content    String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  pages      Page[]
+}
+
+model Page {
+  id         Int      @id @default(autoincrement())
+  noteId     Int
+  content    String
+  pageNumber Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  note       Note     @relation(fields: [noteId], references: [id], onDelete: Cascade)
+
+  @@index([noteId])
+  @@index([noteId, pageNumber])
 }

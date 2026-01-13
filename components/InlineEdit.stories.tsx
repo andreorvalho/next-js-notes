@@ -13,6 +13,9 @@ const meta: Meta<typeof InlineEdit> = {
     multiline: {
       control: { type: 'boolean' },
     },
+    richText: {
+      control: { type: 'boolean' },
+    },
   },
 };
 
@@ -81,6 +84,45 @@ export const ContentStyle: Story = {
   },
 };
 
+export const RichTextMode: Story = {
+  args: {
+    value: '<p>This is <strong>rich text</strong> content with <em>formatting</em>.</p><ul><li>List item 1</li><li>List item 2</li></ul>',
+    onChange: () => {},
+    onSave: () => {},
+    placeholder: 'Click to edit with rich text editor',
+    multiline: true,
+    richText: true,
+    className: 'note-content',
+    contentClassName: 'note-content',
+  },
+};
+
+export const RichTextDisplay: Story = {
+  args: {
+    value: '<h2>Rich Text Display</h2><p>This content is displayed as HTML. Click to edit with the rich text editor.</p><p>You can use <strong>bold</strong>, <em>italic</em>, and <u>underline</u> formatting.</p>',
+    onChange: () => {},
+    onSave: () => {},
+    placeholder: 'Click to start editing',
+    multiline: true,
+    richText: true,
+    className: 'note-content',
+    contentClassName: 'note-content',
+  },
+};
+
+export const RichTextEvernote: Story = {
+  args: {
+    value: '<p>Content pasted from <strong>Evernote</strong>:</p><ul><li>Preserves formatting</li><li>Maintains lists</li><li>Keeps structure</li></ul><p>More content here...</p>',
+    onChange: () => {},
+    onSave: () => {},
+    placeholder: 'Paste Evernote content here',
+    multiline: true,
+    richText: true,
+    className: 'note-content',
+    contentClassName: 'note-content',
+  },
+};
+
 export const Interactive: Story = {
   render: () => {
     const [title, setTitle] = useState('Interactive Title');
@@ -125,6 +167,51 @@ export const Interactive: Story = {
             onSave={handleSave}
             placeholder="Enter content"
             multiline
+            className="note-content"
+            contentClassName="note-content"
+          />
+        </div>
+
+        {lastSaved && (
+          <p
+            className="text-xs"
+            style={{ color: 'var(--color-text-tertiary)' }}
+          >
+            Last saved: {lastSaved.toLocaleTimeString()}
+          </p>
+        )}
+      </div>
+    );
+  },
+};
+
+export const InteractiveRichText: Story = {
+  render: () => {
+    const [content, setContent] = useState(
+      '<p>This is <strong>interactive</strong> rich text content. Click to edit!</p>'
+    );
+    const [lastSaved, setLastSaved] = useState<Date | null>(null);
+
+    const handleSave = () => {
+      setLastSaved(new Date());
+    };
+
+    return (
+      <div className="space-y-4">
+        <div>
+          <h3
+            className="text-sm font-medium mb-2"
+            style={{ color: 'var(--color-text-secondary)' }}
+          >
+            Rich Text Content
+          </h3>
+          <InlineEdit
+            value={content}
+            onChange={setContent}
+            onSave={handleSave}
+            placeholder="Click to edit with rich text editor"
+            multiline
+            richText
             className="note-content"
             contentClassName="note-content"
           />
