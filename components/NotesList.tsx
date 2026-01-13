@@ -77,9 +77,31 @@ export default function NotesList({
     return groups;
   };
 
+  // Strip HTML tags and decode basic HTML entities for clean text preview
+  // Works in both server and client environments
+  const stripHtml = (html: string): string => {
+    if (!html) return '';
+    // Remove HTML tags using regex
+    let text = html.replace(/<[^>]*>/g, '');
+    // Decode common HTML entities
+    text = text
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&apos;/g, "'");
+    // Clean up extra whitespace and newlines
+    text = text.replace(/\s+/g, ' ').trim();
+    return text;
+  };
+
   const truncateContent = (content: string, maxLength: number = 100) => {
-    if (content.length <= maxLength) return content;
-    return content.substring(0, maxLength) + '...';
+    // First strip HTML tags to get clean text
+    const cleanText = stripHtml(content);
+    if (cleanText.length <= maxLength) return cleanText;
+    return cleanText.substring(0, maxLength) + '...';
   };
 
   // Ensure notes is always an array

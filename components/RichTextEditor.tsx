@@ -2,9 +2,9 @@
 
 import { useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import 'quill/dist/quill.snow.css';
 
 // Dynamically import ReactQuill to avoid SSR issues
+// CSS is imported globally in _app.tsx
 const ReactQuill = dynamic(() => import('react-quill-ver2'), { ssr: false });
 
 type RichTextEditorProps = {
