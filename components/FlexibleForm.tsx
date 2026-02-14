@@ -6,7 +6,7 @@ import type {
   ButtonHTMLAttributes,
   TextareaHTMLAttributes,
 } from 'react';
-import { InlineEdit } from './InlineEdit';
+import { SingleLineInlineEdit, MultilineInlineEdit } from './InlineEdit';
 import { FormInput, FormTextarea } from './FormInput';
 
 type FooterLink = {
@@ -271,17 +271,26 @@ export function FlexibleForm({
                 {field.label}
               </label>
             )}
-            <InlineEdit
-              value={field.value}
-              onChange={field.onChange}
-              onSave={field.onSave}
-              placeholder={field.placeholder}
-              multiline={field.multiline}
-              richText={field.richText}
-              className={field.className}
-              titleClassName={field.titleClassName}
-              contentClassName={field.contentClassName}
-            />
+            {field.multiline ? (
+              <MultilineInlineEdit
+                value={field.value}
+                onChange={field.onChange}
+                onSave={field.onSave}
+                placeholder={field.placeholder}
+                className={field.className}
+                contentClassName={field.contentClassName}
+                richText={field.richText}
+              />
+            ) : (
+              <SingleLineInlineEdit
+                value={field.value}
+                onChange={field.onChange}
+                onSave={field.onSave}
+                placeholder={field.placeholder}
+                className={field.className}
+                titleClassName={field.titleClassName}
+              />
+            )}
             {field.helpText && (
               <p
                 className="text-sm mt-1"
