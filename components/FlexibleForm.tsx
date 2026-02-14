@@ -130,7 +130,11 @@ export function FlexibleForm({
 
   const renderTitle = () => {
     /* Document layout: use first inline field as the document title (editable); no separate title block in body */
-    if (layout === 'document' && fields.length > 0 && fields[0].type === 'inline') {
+    if (
+      layout === 'document' &&
+      fields.length > 0 &&
+      fields[0].type === 'inline'
+    ) {
       const first = fields[0];
       return (
         <div className="document-title-field">
@@ -140,7 +144,11 @@ export function FlexibleForm({
             onSave={first.onSave}
             placeholder={first.placeholder}
             className={first.className}
-            titleClassName={layout === 'document' ? 'note-title' : first.titleClassName ?? ''}
+            titleClassName={
+              layout === 'document'
+                ? 'note-title'
+                : (first.titleClassName ?? '')
+            }
           />
         </div>
       );
@@ -348,7 +356,12 @@ export function FlexibleForm({
       return (
         <div className="space-y-6">
           {bodyFields.map((field, index) =>
-            renderField(field, layout === 'document' && fields[0].type === 'inline' ? index + 1 : index)
+            renderField(
+              field,
+              layout === 'document' && fields[0].type === 'inline'
+                ? index + 1
+                : index
+            )
           )}
         </div>
       );
