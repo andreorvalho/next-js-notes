@@ -21,7 +21,7 @@ describe('Rich Text Editor', () => {
     cy.get('.note-title', { timeout: 5000 }).should('be.visible');
 
     // Enter title
-    cy.get('.note-title').click();
+    cy.get('.note-title').first().click();
     cy.get('input.inline-edit-input', { timeout: 5000 })
       .should('be.visible')
       .clear()
@@ -29,18 +29,20 @@ describe('Rich Text Editor', () => {
 
     cy.wait('@createNote').its('response.statusCode').should('eq', 200);
 
-    // Click content area to edit
-    cy.get('.note-content').click();
+    // Click content area to edit (first() in case multiple match)
+    cy.get('.note-content').first().click();
 
-    // Wait for rich text editor to appear
-    cy.get('.ql-editor', { timeout: 5000 }).should('be.visible');
+    // Wait for rich text editor to appear (scroll into view so it's not clipped by overflow parent)
+    cy.get('.ql-editor', { timeout: 5000 }).scrollIntoView().should('be.visible');
 
     // Type content in rich text editor
-    cy.get('.ql-editor').type('This is {selectall}rich text content');
+    cy.get('.ql-editor').first().type('This is rich text content');
+    cy.get('.ql-editor').first().type('{selectall}');
 
-    // Apply bold formatting
-    cy.get('.ql-bold').click();
-    cy.get('.ql-editor').should('contain.html', '<strong>');
+    // Apply bold (scroll toolbar into view then click)
+    cy.get('.ql-toolbar').first().scrollIntoView();
+    cy.get('.ql-bold').first().click();
+    cy.get('.ql-editor').first().should('contain.html', '<strong>');
 
     // Save
     cy.contains('button', 'Save').click();
@@ -61,7 +63,7 @@ describe('Rich Text Editor', () => {
     cy.get('.note-title', { timeout: 5000 }).should('be.visible');
 
     // Enter title
-    cy.get('.note-title').click();
+    cy.get('.note-title').first().click();
     cy.get('input.inline-edit-input', { timeout: 5000 })
       .clear()
       .type('Paste Test Note{enter}');
@@ -69,10 +71,10 @@ describe('Rich Text Editor', () => {
     cy.wait('@createNote');
 
     // Click content area
-    cy.get('.note-content').click();
+    cy.get('.note-content').first().click();
 
-    // Wait for rich text editor
-    cy.get('.ql-editor', { timeout: 5000 }).should('be.visible');
+    // Wait for rich text editor (scroll into view so it's not clipped by overflow parent)
+    cy.get('.ql-editor', { timeout: 5000 }).scrollIntoView().should('be.visible');
 
     // Paste HTML content
     const htmlContent = '<p>This is <strong>formatted</strong> content from Evernote</p>';
@@ -106,33 +108,34 @@ describe('Rich Text Editor', () => {
     cy.contains('button', 'New', { timeout: 10000 }).click();
     cy.get('.note-title', { timeout: 5000 }).should('be.visible');
 
-    cy.get('.note-title').click();
+    cy.get('.note-title').first().click();
     cy.get('input.inline-edit-input', { timeout: 5000 })
       .clear()
       .type('Formatting Test{enter}');
 
     cy.wait('@createNote');
 
-    cy.get('.note-content').click();
-    cy.get('.ql-editor', { timeout: 5000 }).should('be.visible');
+    cy.get('.note-content').first().click();
+    cy.get('.ql-editor', { timeout: 5000 }).scrollIntoView().should('be.visible');
 
     // Type content
-    cy.get('.ql-editor').type('Test content');
+    cy.get('.ql-editor').first().type('Test content');
 
     // Select text and apply bold
-    cy.get('.ql-editor').type('{selectall}');
-    cy.get('.ql-bold').click();
-    cy.get('.ql-editor').should('contain.html', '<strong>');
+    cy.get('.ql-editor').first().type('{selectall}');
+    cy.get('.ql-toolbar').first().scrollIntoView();
+    cy.get('.ql-bold').first().click();
+    cy.get('.ql-editor').first().should('contain.html', '<strong>');
 
     // Apply italic
-    cy.get('.ql-editor').type('{selectall}');
-    cy.get('.ql-italic').click();
-    cy.get('.ql-editor').should('contain.html', '<em>');
+    cy.get('.ql-editor').first().type('{selectall}');
+    cy.get('.ql-italic').first().click();
+    cy.get('.ql-editor').first().should('contain.html', '<em>');
 
     // Create list
-    cy.get('.ql-editor').clear().type('Item 1{enter}Item 2{enter}Item 3');
-    cy.get('.ql-list[value="ordered"]').click();
-    cy.get('.ql-editor').should('contain.html', '<ol>');
+    cy.get('.ql-editor').first().type('{selectall}Item 1{enter}Item 2{enter}Item 3');
+    cy.get('.ql-list[value="ordered"]').first().click();
+    cy.get('.ql-editor').first().should('contain.html', '<ol>');
 
     cy.contains('button', 'Save').click();
     cy.wait('@updateNote', { timeout: 10000 });
@@ -149,21 +152,23 @@ describe('Rich Text Editor', () => {
     cy.contains('button', 'New', { timeout: 10000 }).click();
     cy.get('.note-title', { timeout: 5000 }).should('be.visible');
 
-    cy.get('.note-title').click();
+    cy.get('.note-title').first().click();
     cy.get('input.inline-edit-input', { timeout: 5000 })
       .clear()
       .type('Display Test{enter}');
 
     cy.wait('@createNote');
 
-    cy.get('.note-content').click();
-    cy.get('.ql-editor', { timeout: 5000 }).should('be.visible');
+    cy.get('.note-content').first().click();
+    cy.get('.ql-editor', { timeout: 5000 }).scrollIntoView().should('be.visible');
 
-    // Add formatted content
-    cy.get('.ql-editor').type('Heading{selectall}');
-    cy.get('.ql-header[value="1"]').click();
-    cy.get('.ql-editor').type('{enter}This is a paragraph with {selectall}bold text');
-    cy.get('.ql-bold').click();
+    // Add formatted content (Quill header dropdown: open picker then choose H1)
+    cy.get('.ql-editor').first().type('Heading{selectall}');
+    cy.get('.ql-toolbar').first().scrollIntoView();
+    cy.get('.ql-picker.ql-header').first().click();
+    cy.get('.ql-picker-options [data-value="1"]').first().click({ force: true });
+    cy.get('.ql-editor').first().type('{enter}This is a paragraph with {selectall}bold text');
+    cy.get('.ql-bold').first().click();
 
     cy.contains('button', 'Save').click();
     cy.wait('@updateNote', { timeout: 10000 });

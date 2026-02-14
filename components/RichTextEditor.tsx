@@ -48,21 +48,16 @@ export function RichTextEditor({
     'link',
   ];
 
-  // Handle ref callback to configure Quill
+  // Handle ref callback to configure Quill (guard: getEditor may be undefined before mount or in tests)
   const handleRef = useCallback((ref: any) => {
     quillRef.current = ref;
-    if (ref) {
+    if (ref && typeof ref.getEditor === 'function') {
       const quill = ref.getEditor();
-      if (quill) {
-        // Configure clipboard to handle HTML paste better
+      if (quill && quill.clipboard && typeof quill.clipboard.addMatcher === 'function') {
         quill.clipboard.addMatcher(
           Node.ELEMENT_NODE,
           (node: any, delta: any) => {
-            // Preserve more formatting from Evernote
-            if (node.tagName === 'EN-NOTE') {
-              // Evernote wraps content in EN-NOTE
-              return delta;
-            }
+            if (node && node.tagName === 'EN-NOTE') return delta;
             return delta;
           }
         );

@@ -108,14 +108,19 @@ export default async function handler(
         console.warn('Note found without pages:', notes[0].id);
       }
 
-      // Merge pages into content for each note (transparent to UI)
+      // Merge pages into content; truncate for list to stay under Next.js 4MB response limit
+      const LIST_PREVIEW_MAX = 2000;
       const notesWithContent: Note[] = notes.map((note) => {
-        // Ensure pages is an array
         const pages = Array.isArray(note.pages) ? note.pages : [];
+        const fullContent = mergePagesIntoContent(pages);
+        const content =
+          fullContent.length <= LIST_PREVIEW_MAX
+            ? fullContent
+            : fullContent.slice(0, LIST_PREVIEW_MAX);
         return {
           id: note.id,
           title: note.title,
-          content: mergePagesIntoContent(pages),
+          content,
           created_at: note.created_at,
           updated_at: note.updated_at,
         };

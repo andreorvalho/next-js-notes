@@ -2,12 +2,18 @@ const { exec } = require('child_process');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env.test') });
 
+// Allow Prisma migrate reset when run from Cursor/IDE (test DB only, from .env.test)
+const execEnv = {
+  ...process.env,
+  PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION: process.env.PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION || 'yes',
+};
+
 module.exports = (on, config) => {
   const resetDatabase = () => {
     return new Promise((resolve, reject) => {
       // Reset the database - this will apply migrations and generate the Prisma client
       exec('NODE_ENV=test npx dotenv-cli -e .env.test -- npx prisma migrate reset --force', {
-        env: process.env,
+        env: execEnv,
         cwd: path.resolve(__dirname, '../..'),
       }, (err, stdout, stderr) => {
         if (err) {
@@ -17,7 +23,7 @@ module.exports = (on, config) => {
 
         // Ensure Prisma client is generated (migrate reset should do this, but we ensure it)
         exec('NODE_ENV=test npx dotenv-cli -e .env.test -- npx prisma generate', {
-          env: process.env,
+          env: execEnv,
           cwd: path.resolve(__dirname, '../..'),
         }, (genErr, genStdout, genStderr) => {
           if (genErr) {
@@ -28,7 +34,7 @@ module.exports = (on, config) => {
           // Always run seed explicitly to ensure it runs with the correct environment
           // Run the seed script directly from package.json since prisma.config.ts doesn't have seed configured
           exec('NODE_ENV=test npx dotenv-cli -e .env.test -- node -r ts-node/register/transpile-only -r tsconfig-paths/register prisma/seed.ts', {
-            env: process.env,
+            env: execEnv,
             cwd: path.resolve(__dirname, '../..'),
           }, (seedErr, seedStdout, seedStderr) => {
             if (seedErr) {
