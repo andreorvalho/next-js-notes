@@ -22,10 +22,7 @@ type Story = StoryObj<typeof meta>;
 export const Overview: Story = {
   render: () => (
     <div className="space-y-4 max-w-md">
-      <p
-        className="text-sm"
-        style={{ color: 'var(--color-text-secondary)' }}
-      >
+      <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
         Use SingleLineInlineEdit for titles and short text. Use
         MultilineInlineEdit for note content (plain or rich text). See the
         dedicated story pages for each component.

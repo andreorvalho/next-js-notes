@@ -76,28 +76,25 @@ export default function Home() {
     router.push('/login');
   }, [router]);
 
-  const handleNoteClick = useCallback(
-    async (note: Note) => {
-      setSelectedNote(note);
-      setIsEditing(false);
-      setTitle(note.title);
-      setContent(note.content);
-      setError(undefined);
-      setSuccess(undefined);
-      try {
-        const res = await fetch(`/api/notes/${note.id}`);
-        if (res.ok) {
-          const fullNote: Note = await res.json();
-          setTitle(fullNote.title);
-          setContent(fullNote.content);
-          setSelectedNote(fullNote);
-        }
-      } catch {
-        // Keep list preview content if fetch fails
+  const handleNoteClick = useCallback(async (note: Note) => {
+    setSelectedNote(note);
+    setIsEditing(false);
+    setTitle(note.title);
+    setContent(note.content);
+    setError(undefined);
+    setSuccess(undefined);
+    try {
+      const res = await fetch(`/api/notes/${note.id}`);
+      if (res.ok) {
+        const fullNote: Note = await res.json();
+        setTitle(fullNote.title);
+        setContent(fullNote.content);
+        setSelectedNote(fullNote);
       }
-    },
-    []
-  );
+    } catch {
+      // Keep list preview content if fetch fails
+    }
+  }, []);
 
   const handleNewNote = useCallback(() => {
     setSelectedNote(null);

@@ -53,7 +53,11 @@ export function RichTextEditor({
     quillRef.current = ref;
     if (ref && typeof ref.getEditor === 'function') {
       const quill = ref.getEditor();
-      if (quill && quill.clipboard && typeof quill.clipboard.addMatcher === 'function') {
+      if (
+        quill &&
+        quill.clipboard &&
+        typeof quill.clipboard.addMatcher === 'function'
+      ) {
         quill.clipboard.addMatcher(
           Node.ELEMENT_NODE,
           (node: any, delta: any) => {

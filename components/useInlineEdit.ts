@@ -6,7 +6,11 @@ type UseInlineEditParams = {
   onSave: (value?: string) => void;
 };
 
-export function useInlineEdit({ value, onChange, onSave }: UseInlineEditParams) {
+export function useInlineEdit({
+  value,
+  onChange,
+  onSave,
+}: UseInlineEditParams) {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(value);
 

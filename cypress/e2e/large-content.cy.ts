@@ -1,3 +1,13 @@
+/** Paste HTML into Quill editor via ClipboardEvent (Quill 2 does not expose __quill on DOM) */
+function pasteHtmlIntoQuill(editor: HTMLElement, html: string) {
+  const clipboardEvent = new ClipboardEvent('paste', {
+    clipboardData: new DataTransfer(),
+    bubbles: true,
+  });
+  clipboardEvent.clipboardData?.setData('text/html', html);
+  editor.dispatchEvent(clipboardEvent);
+}
+
 describe('Large Content and Page Splitting', () => {
   before(() => {
     cy.task('resetTestDatabase');
@@ -41,14 +51,11 @@ describe('Large Content and Page Splitting', () => {
     cy.get('.note-content').first().click();
     cy.get('.ql-editor', { timeout: 5000 }).scrollIntoView().should('be.visible');
 
-    // Paste large content
+    // Paste large content (Quill 2 does not expose __quill; use ClipboardEvent)
     const largeContent = generateLargeContent();
     cy.get('.ql-editor').then(($editor) => {
-      const editor = $editor[0] as any;
-      // Set content directly via Quill API
-      if (editor.__quill) {
-        editor.__quill.clipboard.dangerouslyPasteHTML(largeContent);
-      }
+      const editor = $editor[0] as HTMLElement;
+      pasteHtmlIntoQuill(editor, largeContent);
     });
 
     // Wait a bit for content to be set
@@ -91,10 +98,7 @@ describe('Large Content and Page Splitting', () => {
     // Add content with markers to verify it's all there
     const content = '<p>Start marker</p>' + generateLargeContent() + '<p>End marker</p>';
     cy.get('.ql-editor').then(($editor) => {
-      const editor = $editor[0] as any;
-      if (editor.__quill) {
-        editor.__quill.clipboard.dangerouslyPasteHTML(content);
-      }
+      pasteHtmlIntoQuill($editor[0] as HTMLElement, content);
     });
 
     cy.wait(500);
@@ -141,10 +145,7 @@ describe('Large Content and Page Splitting', () => {
     // Add initial content
     const initialContent = '<p>Initial content</p>' + generateLargeContent();
     cy.get('.ql-editor').then(($editor) => {
-      const editor = $editor[0] as any;
-      if (editor.__quill) {
-        editor.__quill.clipboard.dangerouslyPasteHTML(initialContent);
-      }
+      pasteHtmlIntoQuill($editor[0] as HTMLElement, initialContent);
     });
 
     cy.wait(500);
@@ -157,13 +158,13 @@ describe('Large Content and Page Splitting', () => {
     cy.contains('Editable Large Note', { timeout: 5000 }).click();
     cy.wait('@getNote');
 
-    // Click to edit
-    cy.get('.note-content').first().click();
+    // Click to edit (force: large content may be in scroll container with center off-screen)
+    cy.get('.note-content').first().scrollIntoView().click({ force: true });
     cy.get('.ql-editor', { timeout: 5000 }).scrollIntoView().should('be.visible');
 
-    // Add more content
-    cy.get('.ql-editor').type('{moveToEnd}');
-    cy.get('.ql-editor').type('{enter}Additional content added');
+    // Add more content (force: large editor may have center off-screen in scroll container)
+    cy.get('.ql-editor').scrollIntoView().type('{moveToEnd}', { force: true });
+    cy.get('.ql-editor').scrollIntoView().type('{enter}Additional content added', { force: true });
 
     cy.contains('button', 'Save').click();
     cy.wait('@updateNote', { timeout: 30000 });
@@ -196,10 +197,7 @@ describe('Large Content and Page Splitting', () => {
     // Add large content
     const largeContent = generateLargeContent();
     cy.get('.ql-editor').then(($editor) => {
-      const editor = $editor[0] as any;
-      if (editor.__quill) {
-        editor.__quill.clipboard.dangerouslyPasteHTML(largeContent);
-      }
+      pasteHtmlIntoQuill($editor[0] as HTMLElement, largeContent);
     });
 
     cy.wait(500);

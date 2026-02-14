@@ -94,10 +94,7 @@ export function MultilineInlineEdit({
   const hasValue = !!value;
   if (richText && hasValue) {
     return (
-      <div
-        className={`inline-edit-display ${className}`}
-        onClick={handleClick}
-      >
+      <div className={`inline-edit-display ${className}`} onClick={handleClick}>
         <div
           className={`rich-text-display ${contentClassName}`}
           dangerouslySetInnerHTML={{ __html: value }}
