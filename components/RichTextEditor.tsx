@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 // Dynamically import ReactQuill to avoid SSR issues
@@ -21,6 +21,19 @@ export function RichTextEditor({
   className = '',
 }: RichTextEditorProps) {
   const quillRef = useRef<any>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // react-quill-ver2 doesn't destroy Quill on unmount; Quill inserts the toolbar as a
+  // sibling of the editor container, so when React removes only the editor div the
+  // toolbar is left in the DOM. On remount we get a second toolbar. Remove any
+  // .ql-toolbar nodes from our wrapper on unmount so we don't accumulate toolbars.
+  useEffect(() => {
+    return () => {
+      const wrapper = wrapperRef.current;
+      if (!wrapper) return;
+      wrapper.querySelectorAll('.ql-toolbar').forEach((el) => el.remove());
+    };
+  }, []);
 
   // Configure Quill modules
   const modules = {
@@ -70,7 +83,7 @@ export function RichTextEditor({
   }, []);
 
   return (
-    <div className={`rich-text-editor ${className}`}>
+    <div ref={wrapperRef} className={`rich-text-editor ${className}`}>
       <ReactQuill
         ref={handleRef}
         theme="snow"
