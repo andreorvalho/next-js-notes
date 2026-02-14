@@ -100,14 +100,6 @@ export default async function handler(
         },
       });
 
-      // Log for debugging if needed
-      if (
-        notes.length > 0 &&
-        (!notes[0].pages || notes[0].pages.length === 0)
-      ) {
-        console.warn('Note found without pages:', notes[0].id);
-      }
-
       // Merge pages into content; truncate for list to stay under Next.js 4MB response limit
       const LIST_PREVIEW_MAX = 2000;
       const notesWithContent: Note[] = notes.map((note) => {
