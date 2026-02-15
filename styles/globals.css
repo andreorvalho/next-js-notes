@@ -907,10 +907,15 @@ body {
   margin-right: 15px;
 }
 
-/* Only show the toolbar that is directly before the editor container (the one bound to the current
-   Quill instance). Orphan toolbars from remounts are before another toolbar, not before .ql-container. */
-.rich-text-editor .ql-toolbar:not(:has(+ .ql-container)) {
+/* Only show the toolbar that is paired with the editor container (the one bound to the current
+   Quill instance). Support both DOM orders: toolbar then container, or container then toolbar.
+   Orphan toolbars from remounts are before another toolbar, not before .ql-container. */
+.rich-text-editor .ql-toolbar {
   display: none;
+}
+.rich-text-editor .ql-toolbar:has(+ .ql-container),
+.rich-text-editor .ql-container + .ql-toolbar {
+  display: flex;
 }
 
 /* Keep toolbar icons and picker arrows at normal size (prevent them from filling the area) */

@@ -56,8 +56,7 @@ export function RichTextEditor({
     'italic',
     'underline',
     'strike',
-    'list',
-    'bullet',
+    'list', // handles both ordered and bullet list values
     'link',
   ];
 
