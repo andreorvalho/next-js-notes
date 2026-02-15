@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/react';
 import { FormInput, FormTextarea } from './FormInput';
 
 const meta: Meta<typeof FormInput> = {

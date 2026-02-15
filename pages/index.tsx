@@ -40,10 +40,15 @@ export default function Home() {
       params.append('orderDirection', sortDirection);
 
       const response = await fetch(`/api/notes?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch notes: ${response.statusText}`);
+      }
       const data = await response.json();
-      setNotes(data);
+      // Ensure data is an array
+      setNotes(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch notes:', error);
+      setNotes([]); // Set empty array on error
     } finally {
       setIsLoading(false);
     }
@@ -71,13 +76,24 @@ export default function Home() {
     router.push('/login');
   }, [router]);
 
-  const handleNoteClick = useCallback((note: Note) => {
+  const handleNoteClick = useCallback(async (note: Note) => {
     setSelectedNote(note);
     setIsEditing(false);
     setTitle(note.title);
     setContent(note.content);
     setError(undefined);
     setSuccess(undefined);
+    try {
+      const res = await fetch(`/api/notes/${note.id}`);
+      if (res.ok) {
+        const fullNote: Note = await res.json();
+        setTitle(fullNote.title);
+        setContent(fullNote.content);
+        setSelectedNote(fullNote);
+      }
+    } catch {
+      // Keep list preview content if fetch fails
+    }
   }, []);
 
   const handleNewNote = useCallback(() => {

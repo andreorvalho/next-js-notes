@@ -1,19 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { InlineEdit } from './InlineEdit';
+import { SingleLineInlineEdit } from './SingleLineInlineEdit';
 
-const meta: Meta<typeof InlineEdit> = {
-  title: 'Components/InlineEdit',
-  component: InlineEdit,
+const meta: Meta<typeof SingleLineInlineEdit> = {
+  title: 'Components/SingleLineInlineEdit',
+  component: SingleLineInlineEdit,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  argTypes: {
-    multiline: {
-      control: { type: 'boolean' },
-    },
-  },
 };
 
 export default meta;
@@ -46,17 +41,6 @@ export const WithContent: Story = {
   },
 };
 
-export const Multiline: Story = {
-  args: {
-    value:
-      'This is a multiline text.\nYou can edit it by clicking on it.\nPress Ctrl+Enter to save.',
-    onChange: () => {},
-    onSave: () => {},
-    placeholder: 'Enter multiline text here',
-    multiline: true,
-  },
-};
-
 export const TitleStyle: Story = {
   args: {
     value: 'Note Title',
@@ -68,25 +52,9 @@ export const TitleStyle: Story = {
   },
 };
 
-export const ContentStyle: Story = {
-  args: {
-    value:
-      'This is the content of the note. It can be quite long and will wrap to multiple lines as needed.',
-    onChange: () => {},
-    onSave: () => {},
-    placeholder: 'Start writing your note content here...',
-    multiline: true,
-    className: 'note-content',
-    contentClassName: 'note-content',
-  },
-};
-
 export const Interactive: Story = {
   render: () => {
     const [title, setTitle] = useState('Interactive Title');
-    const [content, setContent] = useState(
-      'This is interactive content. Click to edit!'
-    );
     const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
     const handleSave = () => {
@@ -102,31 +70,13 @@ export const Interactive: Story = {
           >
             Title
           </h3>
-          <InlineEdit
+          <SingleLineInlineEdit
             value={title}
             onChange={setTitle}
             onSave={handleSave}
             placeholder="Enter title"
             className="note-title"
             titleClassName="note-title"
-          />
-        </div>
-
-        <div>
-          <h3
-            className="text-sm font-medium mb-2"
-            style={{ color: 'var(--color-text-secondary)' }}
-          >
-            Content
-          </h3>
-          <InlineEdit
-            value={content}
-            onChange={setContent}
-            onSave={handleSave}
-            placeholder="Enter content"
-            multiline
-            className="note-content"
-            contentClassName="note-content"
           />
         </div>
 

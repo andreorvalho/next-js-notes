@@ -1,12 +1,27 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "extends": ["next/core-web-vitals"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unused-vars": "error",
     "prefer-const": "error",
     "no-var": "error"
   },
-  "ignorePatterns": ["node_modules/", ".next/", "cypress/", "prisma/"]
+  "overrides": [
+    {
+      "files": ["**/*.stories.tsx", "**/*.stories.ts"],
+      "rules": {
+        "react-hooks/rules-of-hooks": "off"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "node_modules/",
+    ".next/",
+    "cypress/",
+    "prisma/",
+    "*.config.js",
+    "*.config.ts"
+  ]
 }

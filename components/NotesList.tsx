@@ -63,6 +63,10 @@ export default function NotesList({
 
   const groupNotesByDate = (notes: Note[]) => {
     const groups: { [key: string]: Note[] } = {};
+    // Ensure notes is an array
+    if (!Array.isArray(notes)) {
+      return groups;
+    }
     notes.forEach((note) => {
       const date = formatDate(note.updated_at);
       if (!groups[date]) {
@@ -73,12 +77,36 @@ export default function NotesList({
     return groups;
   };
 
-  const truncateContent = (content: string, maxLength: number = 100) => {
-    if (content.length <= maxLength) return content;
-    return content.substring(0, maxLength) + '...';
+  // Strip HTML tags and decode basic HTML entities for clean text preview
+  // Works in both server and client environments
+  const stripHtml = (html: string): string => {
+    if (!html) return '';
+    // Remove HTML tags using regex
+    let text = html.replace(/<[^>]*>/g, '');
+    // Decode common HTML entities
+    text = text
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&apos;/g, "'");
+    // Clean up extra whitespace and newlines
+    text = text.replace(/\s+/g, ' ').trim();
+    return text;
   };
 
-  const groupedNotes = groupNotesByDate(notes);
+  const truncateContent = (content: string, maxLength: number = 100) => {
+    // First strip HTML tags to get clean text
+    const cleanText = stripHtml(content);
+    if (cleanText.length <= maxLength) return cleanText;
+    return cleanText.substring(0, maxLength) + '...';
+  };
+
+  // Ensure notes is always an array
+  const safeNotes = Array.isArray(notes) ? notes : [];
+  const groupedNotes = groupNotesByDate(safeNotes);
 
   return (
     <div className="w-1/3 border-r border-border bg-surface/50 backdrop-blur-sm overflow-y-auto">
@@ -89,7 +117,7 @@ export default function NotesList({
             <div>
               <h1 className="text-xl font-bold text-text-primary">Notes</h1>
               <p className="text-text-secondary text-sm">
-                {notes.length} notes
+                {safeNotes.length} notes
               </p>
             </div>
 
@@ -308,7 +336,7 @@ export default function NotesList({
           </div>
         )}
 
-        {notes.length === 0 && !isLoading && (
+        {safeNotes.length === 0 && !isLoading && (
           <div className="text-center py-8">
             <p className="text-text-secondary text-sm">No notes found</p>
             <button

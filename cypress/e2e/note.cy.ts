@@ -45,18 +45,15 @@ describe('Create Note', () => {
     // Wait for the note to be saved
     cy.contains('Note saved', { timeout: 10000 }).should('be.visible');
 
-    // Click on the content area to start editing
+    // Click on the content area to start editing (rich text editor)
     cy.get('.note-content').click();
 
-    // Wait for textarea to appear and type the content
-    cy.get('textarea.inline-edit-input', { timeout: 5000 })
-      .should('be.visible')
-      .should('be.focused')
-      .clear()
-      .type('This is the content of my test note.');
+    // Wait for rich text editor to appear and type the content
+    cy.get('.ql-editor', { timeout: 5000 }).scrollIntoView().should('be.visible');
+    cy.get('.ql-editor').type('This is the content of my test note.');
 
-    // Blur the textarea to trigger save
-    cy.get('textarea.inline-edit-input').blur();
+    // Click Save to persist content
+    cy.contains('button', 'Save').click();
 
     // Wait for the API call to update the note
     cy.wait('@updateNote', { timeout: 10000 })
@@ -72,8 +69,8 @@ describe('Create Note', () => {
     // Verify the content preview appears in the list
     cy.contains('This is the content of my test note.').should('be.visible');
 
-    // Verify we can see "6 notes" counter in the sidebar (5 seeded + 1 new)
-    cy.contains('6 notes').should('be.visible');
+    // Verify we can see "7 notes" counter in the sidebar (6 seeded + 1 new)
+    cy.contains('7 notes').should('be.visible');
   });
 });
 

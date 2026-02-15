@@ -6,7 +6,7 @@ import type {
   ButtonHTMLAttributes,
   TextareaHTMLAttributes,
 } from 'react';
-import { InlineEdit } from './InlineEdit';
+import { SingleLineInlineEdit, MultilineInlineEdit } from './InlineEdit';
 import { FormInput, FormTextarea } from './FormInput';
 
 type FooterLink = {
@@ -22,6 +22,7 @@ type InlineField = {
   onSave: (value?: string) => void;
   placeholder?: string;
   multiline?: boolean;
+  richText?: boolean;
   className?: string;
   titleClassName?: string;
   contentClassName?: string;
@@ -128,6 +129,30 @@ export function FlexibleForm({
   };
 
   const renderTitle = () => {
+    /* Document layout: use first inline field as the document title (editable); no separate title block in body */
+    if (
+      layout === 'document' &&
+      fields.length > 0 &&
+      fields[0].type === 'inline'
+    ) {
+      const first = fields[0];
+      return (
+        <div className="document-title-field">
+          <SingleLineInlineEdit
+            value={first.value}
+            onChange={first.onChange}
+            onSave={first.onSave}
+            placeholder={first.placeholder}
+            className={first.className}
+            titleClassName={
+              layout === 'document'
+                ? 'note-title'
+                : (first.titleClassName ?? '')
+            }
+          />
+        </div>
+      );
+    }
     if (!title) {
       return null;
     }
@@ -270,16 +295,26 @@ export function FlexibleForm({
                 {field.label}
               </label>
             )}
-            <InlineEdit
-              value={field.value}
-              onChange={field.onChange}
-              onSave={field.onSave}
-              placeholder={field.placeholder}
-              multiline={field.multiline}
-              className={field.className}
-              titleClassName={field.titleClassName}
-              contentClassName={field.contentClassName}
-            />
+            {field.multiline ? (
+              <MultilineInlineEdit
+                value={field.value}
+                onChange={field.onChange}
+                onSave={field.onSave}
+                placeholder={field.placeholder}
+                className={field.className}
+                contentClassName={field.contentClassName}
+                richText={field.richText}
+              />
+            ) : (
+              <SingleLineInlineEdit
+                value={field.value}
+                onChange={field.onChange}
+                onSave={field.onSave}
+                placeholder={field.placeholder}
+                className={field.className}
+                titleClassName={field.titleClassName}
+              />
+            )}
             {field.helpText && (
               <p
                 className="text-sm mt-1"
@@ -313,9 +348,21 @@ export function FlexibleForm({
   const renderFormFields = () => {
     // Use new fields array if provided, otherwise fall back to legacy inputs/textareas
     if (fields.length > 0) {
+      // Document layout: first field is the title (rendered in header), so only render the rest in the body
+      const bodyFields =
+        layout === 'document' && fields[0].type === 'inline'
+          ? fields.slice(1)
+          : fields;
       return (
         <div className="space-y-6">
-          {fields.map((field, index) => renderField(field, index))}
+          {bodyFields.map((field, index) =>
+            renderField(
+              field,
+              layout === 'document' && fields[0].type === 'inline'
+                ? index + 1
+                : index
+            )
+          )}
         </div>
       );
     }
