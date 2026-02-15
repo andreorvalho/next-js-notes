@@ -15,3 +15,8 @@
 
 // Import commands using CommonJS-compatible form to avoid tsx loader issues on CI
 require('./commands')
+
+// Run database reset once before all tests (reduces 5 resets to 1)
+before(() => {
+  cy.task('resetTestDatabase')
+})

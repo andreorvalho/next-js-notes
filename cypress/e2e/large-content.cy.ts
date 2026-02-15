@@ -9,10 +9,6 @@ function pasteHtmlIntoQuill(editor: HTMLElement, html: string) {
 }
 
 describe('Large Content and Page Splitting', () => {
-  before(() => {
-    cy.task('resetTestDatabase');
-  });
-
   beforeEach(() => {
     cy.mockSession();
   });
@@ -58,8 +54,7 @@ describe('Large Content and Page Splitting', () => {
       pasteHtmlIntoQuill(editor, largeContent);
     });
 
-    // Wait a bit for content to be set
-    cy.wait(500);
+    cy.get('.ql-editor').should('include.text', 'Section 1');
 
     // Save
     cy.contains('button', 'Save').click();
@@ -101,7 +96,7 @@ describe('Large Content and Page Splitting', () => {
       pasteHtmlIntoQuill($editor[0] as HTMLElement, content);
     });
 
-    cy.wait(500);
+    cy.get('.ql-editor').should('include.text', 'Start marker');
     cy.contains('button', 'Save').click();
     cy.wait('@updateNote', { timeout: 30000 });
 
@@ -148,7 +143,7 @@ describe('Large Content and Page Splitting', () => {
       pasteHtmlIntoQuill($editor[0] as HTMLElement, initialContent);
     });
 
-    cy.wait(500);
+    cy.get('.ql-editor').should('include.text', 'Initial content');
     cy.contains('button', 'Save').click();
     cy.wait('@updateNote', { timeout: 30000 });
 
@@ -200,7 +195,7 @@ describe('Large Content and Page Splitting', () => {
       pasteHtmlIntoQuill($editor[0] as HTMLElement, largeContent);
     });
 
-    cy.wait(500);
+    cy.get('.ql-editor').should('include.text', 'Section 1');
     cy.contains('button', 'Save').click();
     cy.wait('@updateNote', { timeout: 30000 });
 

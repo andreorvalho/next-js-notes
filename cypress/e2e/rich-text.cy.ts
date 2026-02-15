@@ -3,10 +3,6 @@ describe('Rich Text Editor', () => {
   const visibleToolbar =
     '.rich-text-edit-container .ql-container + .ql-toolbar, .rich-text-edit-container .ql-toolbar:has(+ .ql-container)';
 
-  before(() => {
-    cy.task('resetTestDatabase');
-  });
-
   beforeEach(() => {
     cy.mockSession();
   });

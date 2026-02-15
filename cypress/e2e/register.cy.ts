@@ -1,9 +1,4 @@
 describe('User Registration and Login', () => {
-  before(() => {
-    // Reset the test database before running the tests
-    cy.task('resetTestDatabase');
-  });
-
   it('should register a new user, redirect to the login page, and login with the new user', () => {
     const email = 'andreorvalho@example.com';
     const password = 'Password123!';

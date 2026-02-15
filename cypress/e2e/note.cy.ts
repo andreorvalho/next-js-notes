@@ -1,8 +1,4 @@
 describe('Create Note', () => {
-  before(() => {
-    cy.task('resetTestDatabase');
-  });
-
   beforeEach(() => {
     // Mock the session instead of doing programmatic login
     cy.mockSession();
