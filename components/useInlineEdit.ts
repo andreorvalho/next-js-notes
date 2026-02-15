@@ -33,10 +33,9 @@ export function useInlineEdit({
   const handleSave = () => {
     if (editValue.trim() !== value) {
       onChange(editValue);
-      onSave(editValue);
-    } else {
-      onSave();
     }
+    // Always pass current editValue so parent never uses stale state (fixes race when Save is clicked right after typing, e.g. in Cypress)
+    onSave(editValue);
     setIsEditing(false);
   };
 
