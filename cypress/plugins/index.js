@@ -54,4 +54,11 @@ module.exports = (on, config) => {
       return resetDatabase();
     },
   });
+
+  // Log total run duration for performance monitoring
+  on('after:run', (results) => {
+    if (results?.totalDuration != null) {
+      console.log(`Cypress total duration: ${(results.totalDuration / 1000).toFixed(2)}s`);
+    }
+  });
 };
