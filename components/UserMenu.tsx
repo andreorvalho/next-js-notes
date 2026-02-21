@@ -19,12 +19,7 @@ export default function UserMenu({ onLogout }: UserMenuProps) {
         aria-expanded={isOpen}
         aria-label="Account menu"
       >
-        <svg
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden
-        >
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
