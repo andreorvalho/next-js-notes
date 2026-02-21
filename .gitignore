@@ -34,3 +34,6 @@ cypress/videos/
 .env.test
 .env.development
 .env.production
+
+# cursor
+.cursor

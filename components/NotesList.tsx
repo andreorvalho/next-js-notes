@@ -109,7 +109,7 @@ export default function NotesList({
   const groupedNotes = groupNotesByDate(safeNotes);
 
   return (
-    <div className="w-1/3 border-r border-border bg-surface/50 backdrop-blur-sm overflow-y-auto">
+    <div className="w-1/3 notes-sidebar overflow-y-auto">
       <div className="p-4">
         {/* Header */}
         <div className="mb-4">

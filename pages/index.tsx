@@ -30,6 +30,7 @@ export default function Home() {
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const fetchNotes = useCallback(async () => {
     setIsLoading(true);
@@ -210,30 +211,8 @@ export default function Home() {
       </div>
 
       <div className="relative text-text-primary">
-        {/* Header */}
-        <div className="sticky top-0 bg-surface border-b border-border px-4 py-4 backdrop-blur-sm z-[1020]">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-text-primary">Notes</h1>
-              <p className="text-text-secondary text-sm">
-                {notes.length} notes
-              </p>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              {/* Logout Button */}
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors text-white"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-
         {/* Main Content - Split Layout */}
-        <div className="flex h-[calc(100vh-80px)]">
+        <div className="flex h-[100vh]">
           <NotesList
             notes={notes}
             selectedNote={selectedNote}
@@ -270,6 +249,32 @@ export default function Home() {
             onContentSave={handleContentSave}
             onNewNote={handleNewNote}
           />
+        </div>
+
+        {/* Floating user menu (logout) */}
+        <div className="fixed bottom-6 right-6 z-[1050]">
+          <button
+            type="button"
+            onClick={() => setIsUserMenuOpen((open) => !open)}
+            className="rounded-full bg-surface shadow-xl border border-border px-4 py-3 text-sm font-medium text-text-primary hover:bg-surface-elevated transition-colors"
+            aria-haspopup="true"
+            aria-expanded={isUserMenuOpen}
+          >
+            Menu
+          </button>
+
+          {isUserMenuOpen && (
+            <div className="mt-3 bg-surface border border-border rounded-2xl shadow-xl py-3 px-4 min-w-[160px]">
+              <p className="text-xs text-text-tertiary mb-2">Account</p>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="w-full px-3 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

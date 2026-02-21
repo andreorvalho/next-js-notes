@@ -12,8 +12,8 @@ module.exports = {
   webpack: (config) => {
     const emptyModulePath = path.resolve(__dirname, 'webpack-empty-module.js');
 
-    // Replace all CSS imports from react-quill-ver2 with empty module
-    // We import them manually in _app.tsx
+    // Replace CSS imports from node_modules with empty (Next.js blocks those)
+    // We import Quill CSS manually from _app.tsx using local copies in styles/vendor/
     const cssImportsToReplace = [
       /highlight\.js\/styles\/github\.css$/,
       /quill\/dist\/quill\.snow\.css$/,
