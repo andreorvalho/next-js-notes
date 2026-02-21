@@ -256,11 +256,24 @@ export default function Home() {
           <button
             type="button"
             onClick={() => setIsUserMenuOpen((open) => !open)}
-            className="rounded-full bg-surface shadow-xl border border-border px-4 py-3 text-sm font-medium text-text-primary hover:bg-surface-elevated transition-colors"
+            className="user-menu-trigger"
             aria-haspopup="true"
             aria-expanded={isUserMenuOpen}
+            aria-label="Account menu"
           >
-            Menu
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
           </button>
 
           {isUserMenuOpen && (

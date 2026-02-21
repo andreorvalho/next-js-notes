@@ -520,6 +520,38 @@ body {
   transform: rotate(15deg);
 }
 
+/* User menu trigger - matches theme toggle design (no border, icon-only) */
+.user-menu-trigger {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-full);
+  border: none;
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-bounce);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-menu-trigger:hover {
+  transform: scale(1.1);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-xl);
+}
+
+.user-menu-trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+}
+
+.user-menu-trigger svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 /* ==========================================================================
    Background Decorations
    ========================================================================== */
