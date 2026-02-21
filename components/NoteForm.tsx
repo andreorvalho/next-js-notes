@@ -5,10 +5,8 @@ import { formatDate } from '@/helpers/date';
 const EDITOR_PLACEHOLDER = 'Start typing to create your note...';
 
 const subtitle = (selectedNote: Note | null) => {
-  if (selectedNote) {
-    return `Created: ${formatDate(selectedNote.created_at)} • Last updated: ${formatDate(selectedNote.updated_at)}`;
-  }
-  return undefined;
+   if (!selectedNote) return;
+  return `Created: ${formatDate(selectedNote.created_at)} • Last updated: ${formatDate(selectedNote.updated_at)}`;
 };
 
 interface NoteFormProps {
@@ -74,7 +72,7 @@ export default function NoteForm({
             fields={fields}
             error={error}
             success={success}
-            subtitle={subtitle(selectedNote || null)}
+            subtitle={subtitle(selectedNote)}
             showLogo={false}
           />
 

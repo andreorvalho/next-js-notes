@@ -35,38 +35,6 @@ export function RichTextEditor({
     };
   }, []);
 
-  // #region agent log
-  useEffect(() => {
-    const t = setTimeout(() => {
-      const wrapper = wrapperRef.current;
-      if (!wrapper) return;
-      const picker = wrapper.querySelector('.ql-picker');
-      const formats = wrapper.querySelector('.ql-formats');
-      const styles = picker ? getComputedStyle(picker as Element) : null;
-      const formatStyles = formats ? getComputedStyle(formats as Element) : null;
-      fetch('http://127.0.0.1:7242/ingest/6e90cf5c-b75b-4404-b985-9e76442bffd3', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '314912' },
-        body: JSON.stringify({
-          sessionId: '314912',
-          location: 'RichTextEditor.tsx:toolbar-styles',
-          message: 'Toolbar computed styles',
-          data: {
-            hasPicker: !!picker,
-            pickerDisplay: styles?.display ?? 'N/A',
-            pickerFloat: styles?.float ?? 'N/A',
-            formatsDisplay: formatStyles?.display ?? 'N/A',
-            quillSnowLoaded: typeof document !== 'undefined' && !!document.querySelector('link[href*="quill"]'),
-          },
-          timestamp: Date.now(),
-          hypothesisId: 'A',
-        }),
-      }).catch(() => {});
-    }, 500);
-    return () => clearTimeout(t);
-  }, []);
-  // #endregion
-
   // Configure Quill modules - layout similar to Quill's default toolbar
   const modules = {
     toolbar: [
