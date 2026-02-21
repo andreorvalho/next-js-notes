@@ -162,13 +162,10 @@ describe('Rich Text Editor', () => {
     cy.get('.note-content').first().click();
     cy.get('.rich-text-edit-container .ql-editor', { timeout: 5000 }).first().scrollIntoView().should('be.visible');
 
-    // Add formatted content (Quill header dropdown: open picker then choose H1)
-    cy.get('.rich-text-edit-container .ql-editor').first().type('Heading{selectall}');
+    // Add formatted content (toolbar has bold, italic, lists - no header picker)
+    cy.get('.rich-text-edit-container .ql-editor').first().type('Item 1{enter}Item 2{enter}Item 3');
     cy.get(visibleToolbar).scrollIntoView();
-    cy.get(visibleToolbar).find('.ql-picker.ql-header').click();
-    cy.get(visibleToolbar).find('.ql-picker-options [data-value="1"]').click({ force: true });
-    cy.get('.rich-text-edit-container .ql-editor').first().type('{enter}This is a paragraph with bold text');
-    // Select all so bold is applied to some content (satisfies <strong> in display)
+    cy.get(visibleToolbar).find('.ql-list[value="ordered"]').click();
     cy.get('.rich-text-edit-container .ql-editor').first().type('{selectall}');
     cy.get(visibleToolbar).find('.ql-bold').click();
 
@@ -178,9 +175,9 @@ describe('Rich Text Editor', () => {
     // Click outside to exit edit mode
     cy.get('body').click(0, 0);
 
-    // Verify HTML is rendered
+    // Verify HTML is rendered in display mode
     cy.get('.rich-text-display').should('be.visible');
-    cy.get('.rich-text-display').should('contain.html', '<h1>');
+    cy.get('.rich-text-display').should('contain.html', '<ol>');
     cy.get('.rich-text-display').should('contain.html', '<strong>');
   });
 });

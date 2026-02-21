@@ -5,6 +5,7 @@ import { Note } from '@/types';
 import { signOut } from 'next-auth/react';
 import NotesList from '@/components/NotesList';
 import NoteForm from '@/components/NoteForm';
+import UserMenu from '@/components/UserMenu';
 
 type ViewMode = 'kanban' | 'list';
 type SortField = 'created_at' | 'updated_at' | 'title';
@@ -210,30 +211,8 @@ export default function Home() {
       </div>
 
       <div className="relative text-text-primary">
-        {/* Header */}
-        <div className="sticky top-0 bg-surface border-b border-border px-4 py-4 backdrop-blur-sm z-[1020]">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-text-primary">Notes</h1>
-              <p className="text-text-secondary text-sm">
-                {notes.length} notes
-              </p>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              {/* Logout Button */}
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors text-white"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-
         {/* Main Content - Split Layout */}
-        <div className="flex h-[calc(100vh-80px)]">
+        <div className="flex h-[100vh]">
           <NotesList
             notes={notes}
             selectedNote={selectedNote}
@@ -271,6 +250,8 @@ export default function Home() {
             onNewNote={handleNewNote}
           />
         </div>
+
+        <UserMenu onLogout={handleLogout} />
       </div>
     </div>
   );

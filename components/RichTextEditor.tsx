@@ -35,13 +35,16 @@ export function RichTextEditor({
     };
   }, []);
 
-  // Configure Quill modules
+  // Configure Quill modules - layout similar to Quill's default toolbar
   const modules = {
     toolbar: [
-      [{ header: [1, 2, 3, false] }],
+      [{ font: [] }],
+      [{ size: ['small', false, 'large', 'huge'] }],
       ['bold', 'italic', 'underline', 'strike'],
       [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ align: [] }],
       ['link'],
+      ['code-block'],
       ['clean'],
     ],
     clipboard: {
@@ -51,13 +54,16 @@ export function RichTextEditor({
   };
 
   const formats = [
-    'header',
+    'font',
+    'size',
     'bold',
     'italic',
     'underline',
     'strike',
-    'list', // handles both ordered and bullet list values
+    'list',
+    'align',
     'link',
+    'code-block',
   ];
 
   // Handle ref callback to configure Quill (guard: getEditor may be undefined before mount or in tests)

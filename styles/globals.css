@@ -250,6 +250,19 @@ body {
   gap: var(--space-md);
 }
 
+/* Notes sidebar surface, aligned with green app theme */
+.notes-sidebar {
+  background-color: var(--color-primary-50);
+  border-right: 1px solid rgba(5, 150, 105, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.dark .notes-sidebar {
+  background-color: var(--color-gray-900);
+  border-right-color: var(--color-gray-800);
+}
+
 /* ==========================================================================
    Form Components
    ========================================================================== */
@@ -507,6 +520,38 @@ body {
   transform: rotate(15deg);
 }
 
+/* User menu trigger - matches theme toggle design (no border, icon-only) */
+.user-menu-trigger {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-full);
+  border: none;
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-bounce);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-menu-trigger:hover {
+  transform: scale(1.1);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-xl);
+}
+
+.user-menu-trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+}
+
+.user-menu-trigger svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 /* ==========================================================================
    Background Decorations
    ========================================================================== */
@@ -674,6 +719,7 @@ body {
   font-weight: 700;
   line-height: 1.2;
   color: var(--color-text-primary);
+  margin-top: 2.75rem;
   margin-bottom: var(--space-lg);
   min-height: 2.5rem;
 }
@@ -695,19 +741,34 @@ body {
   font-weight: 400;
 }
 
+/* OneNote-like layout: soft green outer panel, elevated white editor card */
+.note-editor-panel {
+  background-color: var(--color-primary-50);
+  border-top: 1px solid var(--color-primary-100);
+}
+.dark .note-editor-panel {
+  background-color: var(--color-gray-900);
+  border-top: 1px solid var(--color-gray-800);
+}
+
+.note-editor-panel-inner {
+  min-height: 100%;
+  padding: var(--space-2xl);
+}
+
 .note-container {
   max-width: 800px;
   margin: 0 auto;
-  padding: var(--space-2xl);
-  background-color: var(--color-background);
-  min-height: 100vh;
+  padding: 0;
+  background-color: transparent;
+  min-height: 100%;
 }
 
 .note-document {
-  background-color: var(--color-surface);
-  border-radius: var(--radius-lg);
-  padding: var(--space-3xl);
-  box-shadow: var(--shadow-lg);
+  background-color: var(--color-surface-elevated);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-2xl);
+  box-shadow: var(--shadow-xl);
   position: relative;
   min-height: 60vh;
 }
@@ -715,7 +776,6 @@ body {
 /* Dark mode specific adjustments */
 .dark .note-document {
   background-color: var(--color-gray-900);
-  border: 1px solid var(--color-gray-700);
 }
 
 .dark .inline-edit-display:hover {
@@ -860,6 +920,8 @@ body {
   min-height: 280px;
   display: flex;
   flex-direction: column;
+  background-color: transparent;
+  margin-top: 2.5rem;
 }
 
 /* Quill root (toolbar + container) must be a flex child so container gets space */
@@ -877,34 +939,16 @@ body {
   /* Override Quill's height:100% so the editor is visible when parent height is undefined */
   height: auto !important;
   flex: 1;
-  border: 1px solid var(--color-border);
-  border-top: none;
-  border-bottom-left-radius: var(--radius-md);
-  border-bottom-right-radius: var(--radius-md);
+  border: none !important;
+  border-radius: 0;
   background-color: var(--color-surface);
   color: var(--color-text-primary);
 }
 
+/* Toolbar theme - preserve Quill layout, only override colors */
 .rich-text-editor .ql-toolbar {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0;
-  flex-shrink: 0;
-  border-top-left-radius: var(--radius-md);
-  border-top-right-radius: var(--radius-md);
-  background-color: var(--color-gray-50);
-  border: 1px solid var(--color-border);
-  border-bottom: none;
-}
-
-/* Keep toolbar format groups (bold, lists, etc.) in a single horizontal row */
-.rich-text-editor .ql-toolbar .ql-formats {
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  margin-right: 15px;
+  background-color: var(--color-primary-50) !important;
+  border: none !important;
 }
 
 /* Only show the toolbar that is paired with the editor container (the one bound to the current
@@ -915,22 +959,12 @@ body {
 }
 .rich-text-editor .ql-toolbar:has(+ .ql-container),
 .rich-text-editor .ql-container + .ql-toolbar {
-  display: flex;
-}
-
-/* Keep toolbar icons and picker arrows at normal size (prevent them from filling the area) */
-.rich-text-editor .ql-toolbar button,
-.rich-text-editor .ql-toolbar .ql-picker {
-  width: auto;
-  height: 24px;
-}
-
-.rich-text-editor .ql-toolbar button svg,
-.rich-text-editor .ql-toolbar .ql-picker-label svg {
-  width: 18px;
-  height: 18px;
-  max-width: 18px;
-  max-height: 18px;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-radius: 0;
 }
 
 .rich-text-editor .ql-editor {
@@ -957,27 +991,44 @@ body {
   color: var(--color-text-secondary);
 }
 
+/* Picker dropdowns - let Quill control visibility; only style appearance */
 .rich-text-editor .ql-picker-options {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-primary-100);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
 }
 
 .rich-text-editor .ql-picker-item:hover {
-  background-color: var(--color-gray-100);
+  background-color: var(--color-primary-100);
   color: var(--color-text-primary);
+}
+
+/* Toolbar button hover and active states with brand accents */
+.rich-text-editor .ql-toolbar button:hover .ql-stroke,
+.rich-text-editor .ql-toolbar button.ql-active .ql-stroke {
+  stroke: var(--color-primary-600);
+}
+
+.rich-text-editor .ql-toolbar button:hover .ql-fill,
+.rich-text-editor .ql-toolbar button.ql-active .ql-fill {
+  fill: var(--color-primary-600);
+}
+
+.rich-text-editor .ql-toolbar .ql-picker-label.ql-active,
+.rich-text-editor .ql-toolbar .ql-picker-label:hover {
+  color: var(--color-primary-600);
 }
 
 /* Dark mode for Quill */
 .dark .rich-text-editor .ql-toolbar {
-  background-color: var(--color-gray-800);
+  background-color: var(--color-gray-900);
   border-color: var(--color-gray-700);
 }
 
 .dark .rich-text-editor .ql-container {
   background-color: var(--color-gray-900);
-  border-color: var(--color-gray-700);
+  border: none !important;
 }
 
 .dark .rich-text-editor .ql-editor {
@@ -1003,6 +1054,22 @@ body {
 
 .dark .rich-text-editor .ql-picker-item:hover {
   background-color: var(--color-gray-700);
+  color: var(--color-primary-200);
+}
+
+.dark .rich-text-editor .ql-toolbar button:hover .ql-stroke,
+.dark .rich-text-editor .ql-toolbar button.ql-active .ql-stroke {
+  stroke: var(--color-primary-400);
+}
+
+.dark .rich-text-editor .ql-toolbar button:hover .ql-fill,
+.dark .rich-text-editor .ql-toolbar button.ql-active .ql-fill {
+  fill: var(--color-primary-400);
+}
+
+.dark .rich-text-editor .ql-toolbar .ql-picker-label.ql-active,
+.dark .rich-text-editor .ql-toolbar .ql-picker-label:hover {
+  color: var(--color-primary-300);
 }
 
 /* Rich text edit container */

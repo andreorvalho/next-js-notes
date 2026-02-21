@@ -2,11 +2,11 @@ import { Note } from '@/types';
 import { FlexibleForm } from '@/components/FlexibleForm';
 import { formatDate } from '@/helpers/date';
 
+const EDITOR_PLACEHOLDER = 'Start typing to create your note...';
+
 const subtitle = (selectedNote: Note | null) => {
-  if (selectedNote) {
-    return `Created: ${formatDate(selectedNote.created_at)} • Last updated: ${formatDate(selectedNote.updated_at)}`;
-  }
-  return 'Start typing to create your note...';
+  if (!selectedNote) return;
+  return `Created: ${formatDate(selectedNote.created_at)} • Last updated: ${formatDate(selectedNote.updated_at)}`;
 };
 
 interface NoteFormProps {
@@ -55,7 +55,7 @@ export default function NoteForm({
       value: content,
       onChange: onContentChange,
       onSave: onContentSave,
-      placeholder: 'Start writing your note content here...',
+      placeholder: EDITOR_PLACEHOLDER,
       multiline: true,
       richText: true,
       className: 'note-content',
@@ -65,14 +65,14 @@ export default function NoteForm({
 
   if (selectedNote || isEditing) {
     return (
-      <div className="flex-1 overflow-y-auto">
-        <div className="h-full">
+      <div className="flex-1 overflow-y-auto note-editor-panel">
+        <div className="h-full note-editor-panel-inner">
           <FlexibleForm
             layout="document"
             fields={fields}
             error={error}
             success={success}
-            subtitle={subtitle(selectedNote || null)}
+            subtitle={subtitle(selectedNote)}
             showLogo={false}
           />
 
